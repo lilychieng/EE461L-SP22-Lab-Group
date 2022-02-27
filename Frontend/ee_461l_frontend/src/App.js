@@ -1,7 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
+
+  async function handleClick(event) {
+    event.preventDefault();
+    navigate("/login", { replace: true });
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +25,9 @@ function App() {
         >
           Learn React
         </a>
+        <button type="button" onClick={handleClick}>
+          Go to login page
+        </button>
       </header>
     </div>
   );
