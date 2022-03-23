@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import './index.css';
+import './css/index.css';
 import App from './App';
 
 // import UserManagement from "./components/UserManagement";

@@ -5,7 +5,7 @@ const Nav = () => {
   return (
     <nav className="Nav">
       <ul>
-        <li><Link to="/">Login</Link></li>
+        <li><Link to="/">Register</Link></li>
         <li><Link to="account">Account</Link></li>
         <li><Link to="inventory">Inventory</Link></li>
         <li><Link to="support">Support</Link></li>
