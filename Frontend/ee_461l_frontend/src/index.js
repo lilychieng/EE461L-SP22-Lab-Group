@@ -7,14 +7,12 @@ import {
 } from "react-router-dom";
 import './index.css';
 import App from './App';
-import UserManagement from "./Components/UserManagement";
+
+// import UserManagement from "./components/UserManagement";
 
 ReactDOM.render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="login" element={<UserManagement />} />
-    </Routes>
+    <App />
   </BrowserRouter>,
   document.getElementById('root')
 );
