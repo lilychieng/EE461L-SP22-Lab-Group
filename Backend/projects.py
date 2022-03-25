@@ -32,6 +32,7 @@ class project:
     #sets description string
     def setDescription(self, description):
         self.__name = description
+        return
 
     #returns demo string
     def getDemo(self):
