@@ -1,0 +1,25 @@
+#center-elem{
+  margin: auto;
+  height: "100vh";
+  line-height: 5vh;
+  width: 50%;
+  /* border: 3px solid green; */
+  padding: 10px;
+}
+
+#form{
+  display: 'flex',
+  /* justifyContent: 'Center', */
+  /* alignItems: 'Start', */
+  /* // height: '10vh' */
+}
+
+#pw-box-pads{
+  position:relative;
+  left: 10px
+}
+
+#u-box-pads{
+  position:relative;
+  left: 48px
+}
