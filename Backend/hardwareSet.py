@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 class HWSet:
     
     def __init__(self, qty):
@@ -38,7 +35,3 @@ class HWSet:
     def check_in(self, qty):
         # update the number of units 
         self.__availability += qty
-
-
-
-
