@@ -16,48 +16,9 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
-const axios = require("axios").default;
-
-function UserManagement() {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-
-  const handleUsername = (e) => {
-    setUsername(e.target.value);
-  };
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    axios
-      .get("http://localhost:5000/user/login", {
-        params: {
-          username: username,
-          password: password,
-        },
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
+function Projects() {
   return (
     <div>
-      {/*
-      <h1>Login</h1> 
-      <h3>Username</h3>
-      <input onChange={handleUsername} />
-      <h3>Password</h3>
-      <input onChange={handlePassword} />
-      <button onClick={handleSubmit}>Submit</button>
-      <div>
-        <Link to="/signup">Not a user?</Link>
-      </div> */}
-
       <Box
         component="form"
         sx={{
@@ -69,7 +30,7 @@ function UserManagement() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Item>
-              <h1>Login</h1>
+              <h1>Projects</h1>
             </Item>
           </Grid>
           {/* Username */}
@@ -78,8 +39,8 @@ function UserManagement() {
               <TextField
                 required
                 id="outlined-required"
-                label="Username"
-                onChange={handleUsername}
+                label="hehe"
+                // onChange={handleUsername}
               />
             </Item>
           </Grid>
@@ -89,10 +50,10 @@ function UserManagement() {
             <Item>
               <TextField
                 id="outlined-password-input"
-                label="Password"
+                label="placeholder oop"
                 type="password"
                 autoComplete="current-password"
-                onChange={handlePassword}
+                // onChange={handlePassword}
               />
             </Item>
           </Grid>
@@ -104,9 +65,9 @@ function UserManagement() {
                 justifyContent="center" //??? useless man
                 variant="outlined"
                 size="small"
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
               >
-                Continue
+                lolz
               </Button>
             </Item>
           </Grid>
@@ -119,8 +80,9 @@ function UserManagement() {
                   justifyContent="center" //??? useless man
                   variant="outlined"
                   size="small"
+                  //   onClick={handleSubmit}
                 >
-                  Not a User?
+                  Not a noob?
                 </Button>
               </Link>
             </Item>
@@ -131,4 +93,4 @@ function UserManagement() {
   );
 }
 
-export default UserManagement;
+export default Projects;
