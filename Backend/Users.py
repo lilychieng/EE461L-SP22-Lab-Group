@@ -1,11 +1,11 @@
 from datetime import date, datetime
 
 class Users:
-    def __init__(self, username, password, classes, status):
+    def __init__(self, username, password):
         self.__username = username
         self.__password = password
-        self.__classes = classes
-        self.__status = status
+        self.__classes = []
+        self.__status = "Student"
         self.__timeCreated =  datetime.now()
     
     def get_username(self):
@@ -48,5 +48,9 @@ class Users:
             return False
         return True
 
-    def toDatabase(self):
-        return [{"user": self.__username}, {"created-on": self.__timeCreated}, {"password": self.__password}, {"classes": self.__classes}, {"status": self.__status}]
+    def to_database(self):
+        return {"user": self.__username, 
+                "created-on": self.__timeCreated, 
+                "password": self.__password, 
+                "classes": self.__classes, 
+                "status": self.__status}
