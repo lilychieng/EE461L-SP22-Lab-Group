@@ -1,9 +1,11 @@
-class HWSet:
+class HardwareSet:
     
-    def __init__(self, qty):
+    def __init__(self, qty, class_name):
         self.__capacity = qty
         self.__availability = qty
-        
+        self.__receipts = []
+        self.__class_name = class_name
+
     def get_availability(self):
         # return the number of unused units
         return self.__availability
@@ -16,6 +18,7 @@ class HWSet:
         # return total number of checkout quanities
         return self.__capacity - self.__availability
         
+    #TODO augment to create receipts when checking out
     def check_out(self, qty):
         # checks out qty numbers of units
         # update availability to availability - qty
@@ -30,8 +33,14 @@ class HWSet:
         
         self.__availability -= qty
         return 0  # success
-        
-        
+    
+    #TODO augment to remove receipts when checking in 
     def check_in(self, qty):
         # update the number of units 
         self.__availability += qty
+    
+    def add_receipt(self, receipt):
+        self.__receipts.append(receipt)
+
+    #TODO 
+    

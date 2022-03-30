@@ -7,10 +7,11 @@ app = Flask(__name__)
 config = ConfigParser()
 
 #Static route example
-@app.route('/')
+@app.route('/home/')
 def index():
    return 'Hello world'
 
+@app.route('/home/')
 #Add additional routes here
 
 if __name__ == '__main__':
@@ -21,5 +22,6 @@ if __name__ == '__main__':
 
    #Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority")
+
    #Establish Flask instance
    app.run(debug=True)
