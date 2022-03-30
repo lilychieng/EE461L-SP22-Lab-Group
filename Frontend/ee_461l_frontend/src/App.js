@@ -6,6 +6,7 @@ import Inventory from "./pages/Inventory";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Missing from "./pages/Missing";
+import Support from "./pages/Support";
 
 import React from "react";
 import { Routes, Route } from "react-router-dom";
@@ -14,7 +15,7 @@ import UserSignUp from "./Components/UserManagement/UserSignUp";
 function App() {
   return (
     <div className="App">
-      <Header title="Lily Called Me A Noob" />
+      <Header title="EER Checkout... but Nick is still a noob" />
       <Nav />
       <Routes>
         <Route path="/" element={<Register />}></Route>
@@ -25,6 +26,7 @@ function App() {
           element={<Inventory title="Inventory" />}
         ></Route>
         <Route path="signup" element={<UserSignUp />} />
+        <Route path="support" element={<Support />} />
         <Route path="*" element={<Missing title="Page Not Found" />}></Route>
       </Routes>
       <Footer />
