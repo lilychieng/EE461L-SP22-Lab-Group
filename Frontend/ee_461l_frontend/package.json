@@ -17,7 +17,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-native": "^0.67.4",
-    "react-native-sha256": "^1.4.7",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "styled-components": "^5.3.5",
@@ -28,12 +27,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
