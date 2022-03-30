@@ -33,11 +33,14 @@ function UserSignUp() {
   const handleSubmit = () => {
     if (validatePassword()) {
       axios
-        .get("http://localhost:5000/user/signup", {
+        .post("http://localhost:5000/user/signup/", null, {
           params: {
             username: username,
             password: password,
           },
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          }
         })
         .then(function (response) {
           console.log(response);
