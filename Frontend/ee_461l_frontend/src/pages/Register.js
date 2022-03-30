@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import UserManagement from '../Components/UserManagement';
 import '../css/register.css';
 
 export default function Register() {
     return(
         <main>
             <h1>Register</h1>
-            <div><LoginForm /></div>
+            <div><UserManagement /></div>
             <br></br>
             <Link to="/login">Already a user?</Link>
         </main>

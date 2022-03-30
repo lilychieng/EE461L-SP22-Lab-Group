@@ -1,6 +1,6 @@
-import Header from "./components/Header";
-import Nav from "./components/Nav";
-import Footer from "./components/Footer";
+import Header from "./Components/Header";
+import Nav from "./Components/Nav";
+import Footer from "./Components/Footer";
 
 import Inventory from "./pages/Inventory";
 import Login from "./pages/Login";

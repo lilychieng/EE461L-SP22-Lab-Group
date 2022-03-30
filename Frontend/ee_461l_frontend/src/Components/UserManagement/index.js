@@ -1,19 +1,43 @@
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+
+
+const axios = require('axios').default;
 
 function UserManagement() {
-    const navigate = useNavigate();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
-    async function handleClick(event) {
-        event.preventDefault();
-        navigate("/", { replace: true });
-    }
-    return (
-      <main>
-        <h2>Hello World</h2>
-        <button type="button" onClick={handleClick}>
-          Go to home page
-        </button>
-      </main>
-    );
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
   }
-export default UserManagement;
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  }
+
+  const handleSubmit = () => {
+    axios.get('/localhost:5000/user/login', {
+      params: {
+        username: username,
+        password: password
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+
+  return (
+    <div>
+      <h2>Username</h2>
+      <input onChange={handleUsername}/>
+      <h2>Password</h2>
+      <input onChange={handlePassword}/>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  )
+}
+
+export default UserManagement
