@@ -33,7 +33,7 @@ function UserSignUp() {
   const handleSubmit = () => {
     if (validatePassword()) {
       axios
-        .get("/localhost:5000/user/signup", {
+        .get("https://localhost:5000/user/signup", {
           params: {
             username: username,
             password: password,
