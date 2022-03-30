@@ -24,8 +24,10 @@ function UserSignUp() {
       setError(true);
       return false;
     }
-    setError(false);
-    return true;
+    if (password !== "") {
+      setError(false);
+      return true;
+    }
   };
 
   const handleSubmit = () => {
@@ -57,7 +59,9 @@ function UserSignUp() {
       <input onChange={handlePassword2} />
       <button onClick={handleSubmit}>Submit</button>
       {error && <div>Passwords do not match!</div>}
-      <div><Link to="/login">Already a user?</Link></div>
+      <div>
+        <Link to="/login">Already a user?</Link>
+      </div>
     </div>
   );
 }

@@ -66,6 +66,8 @@ body {
 }
 
 .Footer {
+  position: fixed;
+  bottom: 0;
   padding: 0.75rem;
   display: grid;
   place-content: center;
