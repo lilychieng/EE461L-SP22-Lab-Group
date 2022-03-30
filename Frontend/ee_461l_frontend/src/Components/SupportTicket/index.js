@@ -51,6 +51,11 @@ export default function FormPropsTextFields() {
       autoComplete="off"
     >
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Item>
+            <h1>Submit an Issue</h1>
+          </Item>
+        </Grid>
         {/* User ID */}
         <Grid item xs={12}>
           <Item>
