@@ -3,10 +3,11 @@ from pymongo import MongoClient
 from cryptography.fernet import Fernet
 from configparser import ConfigParser
 from hashlib import sha256
-
+from flask_cors import CORS
 from Users import Users
 
 app = Flask(__name__)
+CORS(app)
 config = ConfigParser()
 c = ""
 
@@ -18,14 +19,25 @@ def index():
 '''
 
 '''
-@app.route('/user/register/', methods=["POST"])
-def register():
+@app.route('/user/signup/', methods=["GET"])
+def signup():
+   print(f"Routing works", flush=True)
    payload = request.args.to_dict()
 
    username = payload['username']                                       #Plaintext username
-   password = sha256(payload['password'].encode('UTF-8').hexdigest())   #Hashed password
+   password = sha256(payload['password'].encode('UTF-8')).hexdigest()   #Hashed password
 
    user = Users(username, password)                                     #User object
+
+   #TODO: 300 code for existing user, do user validation later
+
+   try:
+      t_id = c.Checkout.Users.insert_one(user.to_database()).inserted_id
+   except:
+      return "failed to register user", 500
+   else:
+      print(f"User registered, transaction id is {t_id}", flush=True)
+      return "successfully registered", 200
 
 
 '''

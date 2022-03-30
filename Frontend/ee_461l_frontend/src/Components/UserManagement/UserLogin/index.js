@@ -16,7 +16,7 @@ function UserManagement() {
 
   const handleSubmit = () => {
     axios
-      .get("https://localhost:5000/user/login", {
+      .get("http://localhost:5000/user/login", {
         params: {
           username: username,
           password: password,
