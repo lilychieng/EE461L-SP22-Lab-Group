@@ -17,13 +17,14 @@ function App() {
       <Header title="Lily Called Me A Noob" />
       <Nav />
       <Routes>
+        <Route path="/" element={<Register />}></Route>
         <Route path="/login" element={<Register />}></Route>
         <Route path="account" element={<Account title="Account" />}></Route>
         <Route
           path="inventory"
           element={<Inventory title="Inventory" />}
         ></Route>
-        <Route path="signup" element={<UserSignUp/>} />
+        <Route path="signup" element={<UserSignUp />} />
         <Route path="*" element={<Missing title="Page Not Found" />}></Route>
       </Routes>
       <Footer />
