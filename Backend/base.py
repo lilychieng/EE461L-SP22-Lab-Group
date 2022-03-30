@@ -11,8 +11,10 @@ config = ConfigParser()
 def index():
    return 'Hello world'
 
-@app.route('/home/')
+@app.route('/user/login')
 #Add additional routes here
+def login():
+   return "sucess"
 
 if __name__ == '__main__':
    #Parse config file and decrypt password using stored key
