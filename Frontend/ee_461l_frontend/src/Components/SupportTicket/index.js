@@ -63,7 +63,7 @@ export default function FormPropsTextFields() {
               disabled
               id="outlined-disabled"
               label="User"
-              defaultValue="*Current USER ID/EMAIL**"
+              defaultValue="*Placeholder: Current USER ID/EMAIL**"
             />
           </Item>
         </Grid>

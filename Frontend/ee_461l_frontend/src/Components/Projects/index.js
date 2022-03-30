@@ -33,6 +33,13 @@ function Projects() {
               <h1>Projects</h1>
             </Item>
           </Grid>
+
+          <Grid item xs={12}>
+            <Item>
+              <h3>Create New Project</h3>
+            </Item>
+          </Grid>
+
           {/* Username */}
           <Grid item xs={12}>
             <Item>
@@ -85,6 +92,12 @@ function Projects() {
                   Not a noob?
                 </Button>
               </Link>
+            </Item>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Item>
+              <h3>Join Existing Project</h3>
             </Item>
           </Grid>
         </Grid>

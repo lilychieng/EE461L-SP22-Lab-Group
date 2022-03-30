@@ -30,7 +30,7 @@ export default function Inventory() {
               <CardMedia
                 component="img"
                 height="140"
-                image="/static/images/cards/contemplative-reptile.jpg"
+                image="https://i.imgur.com/cn2Vlek.jpeg" //TODO: get this from backend later
                 alt="green iguana"
               />
               <CardContent>
