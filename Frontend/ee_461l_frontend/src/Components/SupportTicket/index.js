@@ -74,7 +74,7 @@ export default function FormPropsTextFields() {
             <TextField
               id="outlined-select-issue"
               select
-              label="Select"
+              label="Issue Type"
               value={issue}
               onChange={handleChange}
               helperText="Please select your issue type."
