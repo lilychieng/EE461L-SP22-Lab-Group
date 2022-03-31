@@ -86,7 +86,7 @@ function NewProject() {
           <Grid item xs={12}>
             <Item>
               <TextField
-                required
+                // required
                 id="outlined-required"
                 label="Contributors"
                 // onChange={handleUsername}
@@ -98,7 +98,7 @@ function NewProject() {
           <Grid item xs={12}>
             <Item>
               <TextField
-                required
+                // required
                 id="outlined-required"
                 label="Description"
                 // onChange={handleUsername}
@@ -110,7 +110,7 @@ function NewProject() {
           <Grid item xs={12}>
             <Item>
               <TextField
-                required
+                // required
                 id="outlined-required"
                 label="Demo"
                 // onChange={handleUsername}
