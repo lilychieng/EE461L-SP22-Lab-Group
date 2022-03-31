@@ -86,7 +86,7 @@ function UserManagement() {
         <Button variant="outlined" size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
           {isLoading ? <CircularProgress /> : <>Submit</>}
         </Button>
-        <Button variant="outlined" size="small" onClick={() => nav('/signup')}>
+        <Button variant="outlined" size="small" style={{'backgroundColor':'#DDDDDD', 'color':'black'}} onClick={() => nav('/signup')}>
           Not a User?
         </Button>
       </S.form>
