@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import { Stack } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import MenuItem from "@mui/material/MenuItem";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -19,11 +20,35 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
-function Projects() {
-  const [alignment, setAlignment] = React.useState("new");
+const groups = [
+  {
+    value: "USD",
+    label: "Static 1",
+  },
+  {
+    value: "EUR",
+    label: "Static 2",
+  },
+  {
+    value: "BTC",
+    label: "Static 3",
+  },
+  {
+    value: "JPY",
+    label: "Static 4",
+  },
+];
+
+function ExistingProject() {
+  const [alignment, setAlignment] = React.useState("existing");
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
+  };
+
+  const [group, setGroup] = React.useState("");
+  const handleGroupChange = (event) => {
+    setGroup(event.target.value);
   };
 
   return (
@@ -54,6 +79,7 @@ function Projects() {
                 <Link to="/project">
                   <ToggleButton value="new">New Project</ToggleButton>
                 </Link>
+
                 <Link to="/existingproject">
                   <ToggleButton value="existing">Existing Project</ToggleButton>
                 </Link>
@@ -63,55 +89,27 @@ function Projects() {
 
           <Grid item xs={12}>
             <Item>
-              <h3>Create New Project</h3>
+              <h3>Join Existing Project</h3>
             </Item>
           </Grid>
 
-          {/* Project Name */}
+          {/* Groups Drop Down */}
           <Grid item xs={12}>
             <Item>
               <TextField
-                required
-                id="outlined-required"
-                label="Project Name"
-                // onChange={handleUsername}
-              />
-            </Item>
-          </Grid>
-
-          {/* Contributors */}
-          <Grid item xs={12}>
-            <Item>
-              <TextField
-                required
-                id="outlined-required"
-                label="Contributors"
-                // onChange={handleUsername}
-              />
-            </Item>
-          </Grid>
-
-          {/* Description */}
-          <Grid item xs={12}>
-            <Item>
-              <TextField
-                required
-                id="outlined-required"
-                label="Description"
-                // onChange={handleUsername}
-              />
-            </Item>
-          </Grid>
-
-          {/* Demo TODO: setup embedded */}
-          <Grid item xs={12}>
-            <Item>
-              <TextField
-                required
-                id="outlined-required"
-                label="Demo"
-                // onChange={handleUsername}
-              />
+                id="outlined-select-group"
+                select
+                label="Group"
+                value={group}
+                onChange={handleGroupChange}
+                helperText="Please select a group."
+              >
+                {groups.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Item>
           </Grid>
 
@@ -124,7 +122,7 @@ function Projects() {
                 size="small"
                 // onClick={handleSubmit}
               >
-                Create
+                Join
               </Button>
             </Item>
           </Grid>
@@ -134,4 +132,4 @@ function Projects() {
   );
 }
 
-export default Projects;
+export default ExistingProject;

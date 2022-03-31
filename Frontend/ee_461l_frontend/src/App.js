@@ -8,6 +8,7 @@ import Account from "./pages/Account";
 import Missing from "./pages/Missing";
 import Support from "./pages/Support";
 import Project from "./pages/Project";
+import ExistingProject from "./pages/ExistingProject";
 
 import React from "react";
 import { Routes, Route } from "react-router-dom";
@@ -29,6 +30,7 @@ function App() {
         <Route path="signup" element={<UserSignUp />} />
         <Route path="support" element={<Support />} />
         <Route path="project" element={<Project />} />
+        <Route path="existingproject" element={<ExistingProject />} />
         <Route path="*" element={<Missing title="Page Not Found" />}></Route>
       </Routes>
       <Footer />
