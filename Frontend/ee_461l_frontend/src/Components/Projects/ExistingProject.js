@@ -77,9 +77,11 @@ function ExistingProject() {
                 size="small"
               >
                 <Link to="/project">
+                  <ToggleButton value="new">My Projects</ToggleButton>
+                </Link>
+                <Link to="/newproject">
                   <ToggleButton value="new">New Project</ToggleButton>
                 </Link>
-
                 <Link to="/existingproject">
                   <ToggleButton value="existing">Existing Project</ToggleButton>
                 </Link>

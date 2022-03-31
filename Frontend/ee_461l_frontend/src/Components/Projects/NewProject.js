@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
-function Projects() {
+function NewProject() {
   const [alignment, setAlignment] = React.useState("new");
 
   const handleChange = (event, newAlignment) => {
@@ -66,14 +66,69 @@ function Projects() {
 
           <Grid item xs={12}>
             <Item>
-              <h3>My Projects</h3>
+              <h3>Create New Project</h3>
             </Item>
           </Grid>
 
           {/* Project Name */}
           <Grid item xs={12}>
             <Item>
-              <p>**Display Projects**</p>
+              <TextField
+                required
+                id="outlined-required"
+                label="Project Name"
+                // onChange={handleUsername}
+              />
+            </Item>
+          </Grid>
+
+          {/* Contributors */}
+          <Grid item xs={12}>
+            <Item>
+              <TextField
+                required
+                id="outlined-required"
+                label="Contributors"
+                // onChange={handleUsername}
+              />
+            </Item>
+          </Grid>
+
+          {/* Description */}
+          <Grid item xs={12}>
+            <Item>
+              <TextField
+                required
+                id="outlined-required"
+                label="Description"
+                // onChange={handleUsername}
+              />
+            </Item>
+          </Grid>
+
+          {/* Demo TODO: setup embedded */}
+          <Grid item xs={12}>
+            <Item>
+              <TextField
+                required
+                id="outlined-required"
+                label="Demo"
+                // onChange={handleUsername}
+              />
+            </Item>
+          </Grid>
+
+          {/* Create */}
+          <Grid item xs={12}>
+            <Item>
+              <Button
+                justifyContent="center" //??? useless man
+                variant="outlined"
+                size="small"
+                // onClick={handleSubmit}
+              >
+                Create
+              </Button>
             </Item>
           </Grid>
         </Grid>
@@ -82,4 +137,4 @@ function Projects() {
   );
 }
 
-export default Projects;
+export default NewProject;
