@@ -9,6 +9,8 @@ import Grid from "@mui/material/Grid";
 import { Stack } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import MenuItem from "@mui/material/MenuItem";
+import "../../css/styling.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -19,11 +21,34 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
-function Projects() {
-  const [alignment, setAlignment] = React.useState("new");
+const groups = [
+  {
+    value: "USD",
+    label: "Static 1",
+  },
+  {
+    value: "EUR",
+    label: "Static 2",
+  },
+  {
+    value: "BTC",
+    label: "Static 3",
+  },
+  {
+    value: "JPY",
+    label: "Static 4",
+  },
+];
 
+function Projects() {
+  const [alignment, setAlignment] = React.useState("my");
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
+  };
+
+  const [group, setGroup] = React.useState("");
+  const handleGroupChange = (event) => {
+    setGroup(event.target.value);
   };
 
   return (
@@ -51,13 +76,13 @@ function Projects() {
                 onChange={handleChange}
                 size="small"
               >
-                <Link to="/project">
-                  <ToggleButton value="new">My Projects</ToggleButton>
+                <Link to="/project" id="remove-underline">
+                  <ToggleButton value="my">My Projects</ToggleButton>
                 </Link>
-                <Link to="/newproject">
+                <Link to="/newproject" id="remove-underline">
                   <ToggleButton value="new">New Project</ToggleButton>
                 </Link>
-                <Link to="/existingproject">
+                <Link to="/existingproject" id="remove-underline">
                   <ToggleButton value="existing">Existing Project</ToggleButton>
                 </Link>
               </ToggleButtonGroup>
@@ -70,10 +95,23 @@ function Projects() {
             </Item>
           </Grid>
 
-          {/* Project Name */}
+          {/* Groups Drop Down */}
           <Grid item xs={12}>
             <Item>
-              <p>**Display Projects**</p>
+              <TextField
+                id="outlined-select-proj"
+                select
+                label="Project"
+                value={group}
+                onChange={handleGroupChange}
+                helperText="Please select a project."
+              >
+                {groups.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Item>
           </Grid>
         </Grid>

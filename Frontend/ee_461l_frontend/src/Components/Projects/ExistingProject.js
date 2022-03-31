@@ -10,6 +10,7 @@ import { Stack } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import MenuItem from "@mui/material/MenuItem";
+import "../../css/styling.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -41,7 +42,6 @@ const groups = [
 
 function ExistingProject() {
   const [alignment, setAlignment] = React.useState("existing");
-
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
@@ -76,13 +76,13 @@ function ExistingProject() {
                 onChange={handleChange}
                 size="small"
               >
-                <Link to="/project">
-                  <ToggleButton value="new">My Projects</ToggleButton>
+                <Link to="/project" id="remove-underline">
+                  <ToggleButton value="my">My Projects</ToggleButton>
                 </Link>
-                <Link to="/newproject">
+                <Link to="/newproject" id="remove-underline">
                   <ToggleButton value="new">New Project</ToggleButton>
                 </Link>
-                <Link to="/existingproject">
+                <Link to="/existingproject" id="remove-underline">
                   <ToggleButton value="existing">Existing Project</ToggleButton>
                 </Link>
               </ToggleButtonGroup>
