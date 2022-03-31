@@ -6,9 +6,6 @@ const Nav = () => {
     <nav className="Nav">
       <ul>
         <li>
-          <Link to="/">Register</Link>
-        </li>
-        <li>
           <Link to="account">Account</Link>
         </li>
         <li>
@@ -19,6 +16,9 @@ const Nav = () => {
         </li>
         <li>
           <Link to="support">Support</Link>
+        </li>
+        <li>
+          <Link to="/">Logout</Link>
         </li>
       </ul>
     </nav>

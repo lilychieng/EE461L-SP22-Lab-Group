@@ -4,12 +4,10 @@ import "../css/register.css";
 
 const Projects = ({ title }) => {
   return (
-    <main className="Projects">
+    <div className="Projects">
       <h1>{title}</h1>
-      <div>
-        <ProjectPage />
-      </div>
-    </main>
+      <ProjectPage />
+    </div>
   );
 };
 
