@@ -22,7 +22,7 @@ function Projects() {
       <Box
         component="form"
         sx={{
-          "& .MuiTextField-root": { m: 1, width: "25ch" },
+          "& .MuiTextField-root": { m: 1, width: "50ch" },
         }}
         noValidate
         autoComplete="off"
@@ -40,32 +40,55 @@ function Projects() {
             </Item>
           </Grid>
 
-          {/* Username */}
+          {/* Project Name */}
           <Grid item xs={12}>
             <Item>
               <TextField
                 required
                 id="outlined-required"
-                label="hehe"
+                label="Project Name"
                 // onChange={handleUsername}
               />
             </Item>
           </Grid>
 
-          {/* Password */}
+          {/* Contributors */}
           <Grid item xs={12}>
             <Item>
               <TextField
-                id="outlined-password-input"
-                label="placeholder oop"
-                type="password"
-                autoComplete="current-password"
-                // onChange={handlePassword}
+                required
+                id="outlined-required"
+                label="Contributors"
+                // onChange={handleUsername}
               />
             </Item>
           </Grid>
 
-          {/* Continue */}
+          {/* Description */}
+          <Grid item xs={12}>
+            <Item>
+              <TextField
+                required
+                id="outlined-required"
+                label="Description"
+                // onChange={handleUsername}
+              />
+            </Item>
+          </Grid>
+
+          {/* Demo TODO: setup embedded */}
+          <Grid item xs={12}>
+            <Item>
+              <TextField
+                required
+                id="outlined-required"
+                label="Demo"
+                // onChange={handleUsername}
+              />
+            </Item>
+          </Grid>
+
+          {/* Create */}
           <Grid item xs={12}>
             <Item>
               <Button
@@ -74,30 +97,23 @@ function Projects() {
                 size="small"
                 // onClick={handleSubmit}
               >
-                lolz
+                Create
               </Button>
             </Item>
           </Grid>
 
-          {/* Not a User */}
           <Grid item xs={12}>
             <Item>
-              <Link to="/signup">
-                <Button
-                  justifyContent="center" //??? useless man
-                  variant="outlined"
-                  size="small"
-                  //   onClick={handleSubmit}
-                >
-                  Not a noob?
-                </Button>
-              </Link>
+              <h3>
+                Join Existing Project <br /> Hello <br /> Hello <br /> Hello{" "}
+                <br /> Hello <br /> Hello
+              </h3>
             </Item>
           </Grid>
 
           <Grid item xs={12}>
             <Item>
-              <h3>Join Existing Project</h3>
+              <p>INsert Search Function</p>
             </Item>
           </Grid>
         </Grid>
