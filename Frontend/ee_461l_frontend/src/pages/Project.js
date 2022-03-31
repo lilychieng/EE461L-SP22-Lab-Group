@@ -9,7 +9,6 @@ const Projects = ({ title }) => {
       <div>
         <ProjectPage />
       </div>
-      <p>This is the projects page. Coming soon!</p>
     </main>
   );
 };

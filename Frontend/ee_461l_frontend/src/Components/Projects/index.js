@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import { Stack } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -18,15 +19,14 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Projects() {
   return (
-    <div>
-      <Box
-        component="form"
-        sx={{
-          "& .MuiTextField-root": { m: 1, width: "50ch" },
-        }}
-        noValidate
-        autoComplete="off"
-      >
+    <Box
+      component="form"
+      sx={{
+        "& .MuiTextField-root": { m: 1, width: "50ch" },
+      }}
+      noValidate
+    >
+      <div>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Item>
@@ -36,7 +36,7 @@ function Projects() {
 
           <Grid item xs={12}>
             <Item>
-              <h3>Create New Project</h3>
+              <h3>Create New Project or Join Existing Project</h3>
             </Item>
           </Grid>
 
@@ -101,24 +101,9 @@ function Projects() {
               </Button>
             </Item>
           </Grid>
-
-          <Grid item xs={12}>
-            <Item>
-              <h3>
-                Join Existing Project <br /> Hello <br /> Hello <br /> Hello{" "}
-                <br /> Hello <br /> Hello
-              </h3>
-            </Item>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Item>
-              <p>INsert Search Function</p>
-            </Item>
-          </Grid>
         </Grid>
-      </Box>
-    </div>
+      </div>
+    </Box>
   );
 }
 
