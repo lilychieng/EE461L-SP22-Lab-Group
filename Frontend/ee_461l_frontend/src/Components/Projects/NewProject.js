@@ -33,6 +33,7 @@ function NewProject() {
         "& .MuiTextField-root": { m: 1, width: "50ch" },
       }}
       noValidate
+      //   height="100vh"
     >
       <div>
         <Grid container spacing={2}>
