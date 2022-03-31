@@ -76,7 +76,6 @@ function UserManagement() {
           <Grid item xs={12}>
             <Item>
               <TextField
-                required
                 id="outlined-required"
                 label="Username"
                 onChange={handleUsername}
