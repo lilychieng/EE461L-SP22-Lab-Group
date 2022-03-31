@@ -1,4 +1,5 @@
-from flask import Flask, redirect, url_for, request, jsonify
+from flask import Flask, redirect, url_for, request, jsonify, abort, Response
+import json
 from pymongo import MongoClient
 from cryptography.fernet import Fernet
 from configparser import ConfigParser
@@ -58,9 +59,10 @@ Returns:
 401 - User password in credentials does not match an existing entry
 200 - Successful user login
 '''
-@app.route('/user/login', methods=["GET"])
+@app.route('/user/login', methods=["POST"])
 def login():
-   payload = request.args.to_dict()
+   req = json.loads(request.data)
+   payload = req['data']
 
    username = payload['username']                                       #Plaintext username
    password = sha256(payload['password'].encode('UTF-8')).hexdigest()   #Hashed password
@@ -69,11 +71,11 @@ def login():
    matched = collection.find_one({'user': username})
    
    if matched == None:
-      return 'user not found', 404
+      return 'user not found'
    elif (matched['password'] == password):
-      return 'success', 200
+      return 'success'
    else:
-      return 'user credentials do not match', 401
+      return 'user credentials do not match'
 
 
 if __name__ == '__main__':

@@ -14,6 +14,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import UserSignUp from "./Components/UserManagement/UserSignUp";
 import SupportTicket from "./Components/SupportTicket";
+import UserManagement from "./Components/UserManagement/UserLogin";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
       <Header title="EER Checkout" />
       <Nav />
       <Routes>
-        <Route path="/" element={<Register />}></Route>
+        <Route path="/" element={<UserManagement history={history} />}></Route>
         <Route path="/login" element={<Register />}></Route>
         <Route path="account" element={<Account title="Account" />}></Route>
         <Route

@@ -1,26 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(0.25),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  boxShadow: "none",
-}));
+import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
+import * as S from "./style";
 
 const axios = require("axios").default;
 
 function UserManagement() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const nav = useNavigate();
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -30,15 +25,31 @@ function UserManagement() {
   };
 
   const handleSubmit = () => {
+    setError(false);
+    if (!username || !password) {
+      setError(true);
+      setErrorMessage("Enter a Username and Password");
+      return;
+    }
     axios
-      .get("http://localhost:5000/user/login", {
-        params: {
+      .post("http://localhost:5000/user/login", {
+        data: {
           username: username,
           password: password,
         },
       })
       .then(function (response) {
-        console.log(response);
+        let responseMessage = response.data;
+        if (responseMessage === "user not found") {
+          setError(true);
+          setErrorMessage("Username not found.");
+        } else if (responseMessage === "user credentials do not match") {
+          setError(true);
+          setErrorMessage("Password is incorrect.");
+        } else {
+          setIsLoading(true);
+          nav('/inventory');
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -47,85 +58,38 @@ function UserManagement() {
 
   return (
     <div>
-      {/*
-      <h1>Login</h1> 
+      {/* <h1>Login</h1>
       <h3>Username</h3>
       <input onChange={handleUsername} />
       <h3>Password</h3>
       <input onChange={handlePassword} />
       <button onClick={handleSubmit}>Submit</button>
+      <div>{error && errorMessage}</div>
       <div>
         <Link to="/signup">Not a user?</Link>
       </div> */}
 
-      <Box
-        component="form"
-        sx={{
-          "& .MuiTextField-root": { m: 1, width: "25ch" },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Item>
-              <h1>Login</h1>
-            </Item>
-          </Grid>
-          {/* Username */}
-          <Grid item xs={12}>
-            <Item>
-              <TextField
-                id="outlined-required"
-                label="Username"
-                onChange={handleUsername}
-              />
-            </Item>
-          </Grid>
-
-          {/* Password */}
-          <Grid item xs={12}>
-            <Item>
-              <TextField
-                id="outlined-password-input"
-                label="Password"
-                type="password"
-                autoComplete="current-password"
-                onChange={handlePassword}
-              />
-            </Item>
-          </Grid>
-
-          {/* Continue */}
-          <Grid item xs={12}>
-            <Item>
-              <Button
-                justifyContent="center" //??? useless man
-                variant="outlined"
-                size="small"
-                onClick={handleSubmit}
-              >
-                Continue
-              </Button>
-            </Item>
-          </Grid>
-
-          {/* Not a User */}
-          <Grid item xs={12}>
-            <Item>
-              <Link to="/signup">
-                <Button
-                  justifyContent="center" //??? useless man
-                  variant="outlined"
-                  size="small"
-                >
-                  Not a User?
-                </Button>
-              </Link>
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
+      <S.form>
+        <div>Login</div>
+        <TextField
+          id="outlined-required"
+          label="Username"
+          onChange={handleUsername}
+        />
+        <TextField
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          onChange={handlePassword}
+        />
+        <S.error>{error && errorMessage}</S.error>
+        <Button variant="outlined" size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
+          {isLoading ? <CircularProgress /> : <>Submit</>}
+        </Button>
+        <Button variant="outlined" size="small" onClick={() => nav('/signup')}>
+          Not a User?
+        </Button>
+      </S.form>
     </div>
   );
 }
