@@ -56,6 +56,7 @@ function UserManagement() {
       });
   };
 
+  const classes = S.useStyles();
   return (
     <div>
       {/* <h1>Login</h1>
@@ -72,11 +73,15 @@ function UserManagement() {
       <S.form>
         <div>Login</div>
         <TextField
+          className={classes.root}
+          inputProps={{ className: classes.input }}
           id="outlined-required"
           label="Username"
           onChange={handleUsername}
         />
         <TextField
+          className={classes.root}
+          inputProps={{ className: classes.input }}
           id="outlined-password-input"
           label="Password"
           type="password"

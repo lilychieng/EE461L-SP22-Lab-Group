@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { makeStyles } from "@material-ui/styles";
 
 export const form = styled.div`
   gap: 15px;
@@ -14,3 +15,12 @@ export const error = styled.div`
   font-size: 15px;
   color: red;
 `;
+
+export const useStyles = makeStyles({
+  root: {
+    background: "white"
+  },
+  input: {
+    color: "black"
+  }
+});

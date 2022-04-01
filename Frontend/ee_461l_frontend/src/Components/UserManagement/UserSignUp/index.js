@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
+import * as S from "../UserLogin/style";
+
+const axios = require("axios").default;
 
 function UserSignUp() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [password2, setPassword2] = useState();
   const [error, setError] = useState(false);
-
-  const axios = require("axios").default;
+  
+  const [errorMessage, setErrorMessage] = useState();
+  // const [isLoading, setIsLoading] = useState(false);
+  const nav = useNavigate();
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -22,6 +32,7 @@ function UserSignUp() {
   const validatePassword = () => {
     if (password !== password2) {
       setError(true);
+      setErrorMessage("Passwords do not match");
       return false;
     }
     if (password !== "") {
@@ -51,9 +62,10 @@ function UserSignUp() {
     }
   };
 
+  const classes = S.useStyles();
   return (
     <div>
-      <h1>Sign Up</h1>
+      {/* <h1>Sign Up</h1>
       <h3>Email (@utexas)</h3>
       <input onChange={handleUsername} />
       <h3>Password</h3>
@@ -64,7 +76,42 @@ function UserSignUp() {
       {error && <div>Passwords do not match!</div>}
       <div>
         <Link to="/login">Already a user?</Link>
-      </div>
+      </div> */}
+
+      <S.form>
+        <div>Sign Up</div>
+        <TextField
+          className={classes.root}
+          inputProps={{ className: classes.input }}
+          id="outlined-required"
+          label="Email (@utexas)" 
+          onChange={handleUsername}
+        />
+        <TextField
+          className={classes.root}
+          inputProps={{ className: classes.input }}
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          onChange={handlePassword}
+        />
+        <TextField
+          className={classes.root}
+          inputProps={{ className: classes.input }}
+          id="outlined-confirm-password-input"
+          label="Confirm Password"
+          type="password"
+          onChange={handlePassword2}
+        />
+        <S.error>{error && errorMessage}</S.error>
+        <Button size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
+          Placebo Submit
+          {/* {isLoading ? <CircularProgress /> : <>Submit</>} */}
+        </Button>
+        <Button size="small" style={{'backgroundColor':'#FFFFFF', 'color':'black'}} onClick={() => nav('/login')}>
+          Already a User?
+        </Button>
+      </S.form>
     </div>
   );
 }
