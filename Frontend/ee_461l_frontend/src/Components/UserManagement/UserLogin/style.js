@@ -7,7 +7,7 @@ export const form = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #d3d3d3;
+  background-color: #f9dcc4;
 `;
 
 export const error = styled.div`

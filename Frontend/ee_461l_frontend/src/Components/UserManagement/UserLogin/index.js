@@ -83,10 +83,10 @@ function UserManagement() {
           onChange={handlePassword}
         />
         <S.error>{error && errorMessage}</S.error>
-        <Button variant="outlined" size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
+        <Button size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
           {isLoading ? <CircularProgress /> : <>Submit</>}
         </Button>
-        <Button variant="outlined" size="small" style={{'backgroundColor':'#DDDDDD', 'color':'black'}} onClick={() => nav('/signup')}>
+        <Button size="small" style={{'backgroundColor':'#FFFFFF', 'color':'black'}} onClick={() => nav('/signup')}>
           Not a User?
         </Button>
       </S.form>
