@@ -1,3 +1,4 @@
+import collections
 from flask import Flask, redirect, url_for, request, jsonify, abort, Response
 import json
 from pymongo import MongoClient
@@ -6,6 +7,7 @@ from configparser import ConfigParser
 from hashlib import sha256
 from flask_cors import CORS, cross_origin
 from Users import Users
+from projects import project
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -47,6 +49,20 @@ def signup():
    else:
       return "successfully registered", 200
    
+@app.route('/projects', methods=["POST"])
+def x():
+   req = json.loads(request.data)
+   payload = req['data']
+
+   name = payload['name']
+   contributors = payload['contributors']
+   description = payload['description']
+   demo = payload['demo']
+
+   newProject = project(name, contributors, description, demo)
+   newDoc = project.toDB
+   collection = c.Checkout.Projects
+   collection.insert_one(newDoc)
 
 '''
 Route: login
