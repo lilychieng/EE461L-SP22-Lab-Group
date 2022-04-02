@@ -1,21 +1,23 @@
+import { Button } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Nav = () => {
+  const nav = useNavigate();
   return (
     <nav className="Nav">
       <ul>
         <li>
-          <Link to="account">Account</Link>
+          <Button onClick={() => nav("/account")}>Account</Button>
         </li>
         <li>
-          <Link to="inventory">Inventory</Link>
+          <Button onClick={() => nav("/inventory")}>Inventory</Button>
         </li>
         <li>
-          <Link to="project">Projects</Link>
+          <Button onClick={() => nav("/project")}>Projects</Button>
         </li>
         <li>
-          <Link to="support">Support</Link>
+          <Button onClick={() => nav("/support")}>Support</Button>
         </li>
         <li>
           <Link to="/login">Logout</Link>

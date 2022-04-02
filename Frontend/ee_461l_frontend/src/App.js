@@ -22,15 +22,15 @@ function App() {
           path="/login"
           element={<UserLogin/>}
         />
-        <Route path="account" element={<Account title="Account" />}></Route>
+        <Route path="/account" element={<Account title="Account" />}></Route>
         <Route
-          path="inventory"
+          path="/inventory"
           element={<Inventory title="Inventory" />}
         ></Route>
-        <Route path="signup" element={<UserSignUp />} />
-        <Route path="support" element={<SupportTicket />} />
-        <Route path="project" element={<Project />} />
-        <Route path="existingproject" element={<ExistingProject />} />
+        <Route path="/signup" element={<UserSignUp />} />
+        <Route path="/support" element={<SupportTicket />} />
+        <Route path="/project" element={<Project />} />
+        <Route path="/existingproject" element={<ExistingProject />} />
         <Route path="newproject" element={<NewProject />} />
 
         <Route path="*" element={<Missing title="Page Not Found" />}></Route>
