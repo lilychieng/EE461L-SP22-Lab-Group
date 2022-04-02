@@ -30,10 +30,10 @@ Returns:
 200 - Succesful user registration in the database
 '''
 @app.route('/user/signup/', methods=["POST"])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def signup():
-   print(f"Routing works", flush=True)
-   payload = request.args.to_dict()
+   req = json.loads(request.data)
+   payload = req['data']
    
    username = payload['username']                                       #Plaintext username
    password = sha256(payload['password'].encode('UTF-8')).hexdigest()   #Hashed password

@@ -1,16 +1,17 @@
-import React from "react";
-import InventoryPage from "../Components/Inventory";
+import React, { useState } from "react";
+import Inventory from "../Components/Inventory";
+import Header from "../Components/Header";
+import Nav from "../Components/Nav";
 
-const Inventory = ({ title }) => {
+const InventoryPage = () => {
   return (
-    <div className="Inventory">
-      <h1>{title}</h1>
-      <div>
-        <InventoryPage />
+    <>
+      <Nav />
+      <div className="Inventory">
+          <Inventory />
       </div>
-      <p>This is the inventory me page. Coming soon!</p>
-    </div>
+    </>
   );
 };
 
-export default Inventory;
+export default InventoryPage;

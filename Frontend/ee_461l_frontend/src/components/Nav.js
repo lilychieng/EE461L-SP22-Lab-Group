@@ -18,7 +18,7 @@ const Nav = () => {
           <Link to="support">Support</Link>
         </li>
         <li>
-          <Link to="/">Logout</Link>
+          <Link to="/login">Logout</Link>
         </li>
       </ul>
     </nav>

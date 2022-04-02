@@ -5,7 +5,7 @@ const Missing = ({ title }) => {
   return (
     <main className="Missing">
       <h1>{title}</h1>
-      <p><Link to="/">Return To Login Page</Link></p>
+      <p><Link to="/login">Return To Login Page</Link></p>
     </main>
   )
 }

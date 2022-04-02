@@ -45,13 +45,10 @@ function UserSignUp() {
     if (validatePassword()) {
       axios
         .post("http://localhost:5000/user/signup/", {
-          params: {
+          data: {
             username: username,
             password: password,
           },
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          }
         })
         .then(function (response) {
           console.log(response);
