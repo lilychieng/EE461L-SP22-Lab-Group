@@ -62,19 +62,6 @@ function UserSignUp() {
   const classes = S.useStyles();
   return (
     <div>
-      {/* <h1>Sign Up</h1>
-      <h3>Email (@utexas)</h3>
-      <input onChange={handleUsername} />
-      <h3>Password</h3>
-      <input onChange={handlePassword} />
-      <h3>Confirm Password</h3>
-      <input onChange={handlePassword2} />
-      <button onClick={handleSubmit}>Submit</button>
-      {error && <div>Passwords do not match!</div>}
-      <div>
-        <Link to="/login">Already a user?</Link>
-      </div> */}
-
       <S.form>
         <div>Sign Up</div>
         <TextField
@@ -103,7 +90,6 @@ function UserSignUp() {
         <S.error>{error && errorMessage}</S.error>
         <Button size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
           Submit
-          {/* {isLoading ? <CircularProgress /> : <>Submit</>} */}
         </Button>
         <Button size="small" style={{'backgroundColor':'#FFFFFF', 'color':'black'}} onClick={() => nav('/login')}>
           Already a User?

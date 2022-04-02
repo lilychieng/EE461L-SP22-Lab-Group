@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Alert from '@mui/material/Alert';
 import { styled } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
+import Header from "../../Header";
 
 const axios = require("axios").default;
 
@@ -28,7 +30,7 @@ function UserManagement() {
     setError(false);
     if (!username || !password) {
       setError(true);
-      setErrorMessage("Enter a Username and Password");
+      setErrorMessage("Missing Fields");
       return;
     }
     axios
@@ -59,20 +61,11 @@ function UserManagement() {
   const classes = S.useStyles();
   return (
     <div>
-      {/* <h1>Login</h1>
-      <h3>Username</h3>
-      <input onChange={handleUsername} />
-      <h3>Password</h3>
-      <input onChange={handlePassword} />
-      <button onClick={handleSubmit}>Submit</button>
-      <div>{error && errorMessage}</div>
-      <div>
-        <Link to="/signup">Not a user?</Link>
-      </div> */}
-
+      <h1>EER Checkout</h1>
       <S.form>
         <div>Login</div>
         <TextField
+        fullWidth
           className={classes.root}
           inputProps={{ className: classes.input }}
           id="outlined-required"
@@ -87,7 +80,8 @@ function UserManagement() {
           type="password"
           onChange={handlePassword}
         />
-        <S.error>{error && errorMessage}</S.error>
+        
+        <S.error>{error && <Alert severity="error">{errorMessage}</Alert>}</S.error>
         <Button size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
           {isLoading ? <CircularProgress /> : <>Submit</>}
         </Button>

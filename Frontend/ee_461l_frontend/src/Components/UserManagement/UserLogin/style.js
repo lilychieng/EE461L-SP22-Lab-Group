@@ -3,9 +3,11 @@ import { makeStyles } from "@material-ui/styles";
 
 export const form = styled.div`
   gap: 15px;
-  margin: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   padding: 40px 60px;
-  position: relative;
   display: flex;
   flex-direction: column;
   background-color: #f9dcc4;
@@ -18,9 +20,9 @@ export const error = styled.div`
 
 export const useStyles = makeStyles({
   root: {
-    background: "white"
+    background: "white",
   },
   input: {
-    color: "black"
-  }
+    color: "black",
+  },
 });

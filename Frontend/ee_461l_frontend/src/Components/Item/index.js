@@ -5,10 +5,12 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import "../../css/App.css"
 
-function ItemCard() {
+function ItemCard({item}) {
   return (
-      <Card sx={{ maxWidth: 345 }}>
+    <div className="card" style={{"maxWidth": "1000px", "margin": "0 auto", "display": "grid", "gridGap": "1rem", "margin":"20px"}}>
+      <Card>
         <CardMedia
           component="img"
           height="140"
@@ -17,10 +19,10 @@ function ItemCard() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            TM4C
+            {item.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            EE 319K : 5/19 Available
+          {item.class}: {item.avail}/{item.capacity} Available
           </Typography>
         </CardContent>
         <CardActions>
@@ -28,6 +30,7 @@ function ItemCard() {
           <Button size="small">Return </Button>
         </CardActions>
       </Card>
+      </div>
   );
 }
 
