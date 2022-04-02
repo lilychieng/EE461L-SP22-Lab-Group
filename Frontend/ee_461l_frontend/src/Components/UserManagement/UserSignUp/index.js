@@ -44,7 +44,7 @@ function UserSignUp() {
   const handleSubmit = () => {
     if (validatePassword()) {
       axios
-        .post("http://localhost:5000/user/signup/", null, {
+        .post("http://localhost:5000/user/signup/", {
           params: {
             username: username,
             password: password,
@@ -105,7 +105,7 @@ function UserSignUp() {
         />
         <S.error>{error && errorMessage}</S.error>
         <Button size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
-          Placebo Submit
+          Submit
           {/* {isLoading ? <CircularProgress /> : <>Submit</>} */}
         </Button>
         <Button size="small" style={{'backgroundColor':'#FFFFFF', 'color':'black'}} onClick={() => nav('/login')}>
