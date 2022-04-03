@@ -1,7 +1,10 @@
 import React from "react";
+import Nav from "../Components/Nav";
 
 const Account = ({ title }) => {
   return (
+    <>
+    <Nav/>
     <main className="Account">
       <h1>{title}</h1>
       <p>
@@ -9,6 +12,7 @@ const Account = ({ title }) => {
         user's projects, checkout history, and ticket history
       </p>
     </main>
+    </>
   );
 };
 

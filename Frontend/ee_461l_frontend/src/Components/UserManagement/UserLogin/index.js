@@ -11,7 +11,7 @@ import Header from "../../Header";
 
 const axios = require("axios").default;
 
-function UserManagement() {
+function UserManagement({setAuthenticated}) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState(false);
@@ -49,6 +49,7 @@ function UserManagement() {
           setError(true);
           setErrorMessage("Password is incorrect.");
         } else {
+          setAuthenticated(true);
           setIsLoading(true);
           nav('/inventory');
         }

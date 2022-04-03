@@ -11,6 +11,7 @@ import { Routes, Route } from "react-router-dom";
 import UserSignUp from "./Components/UserManagement/UserSignUp";
 import SupportTicket from "./Components/SupportTicket";
 import UserLogin from "./Components/UserManagement/UserLogin";
+import RequireAuthentication from "./RequireAuthentication";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -18,20 +19,57 @@ function App() {
   return (
     <div className="App">
       <Routes>
+        <Route path="/login" element={<UserLogin setAuthenticated={setAuthenticated}/>} />
+        <Route path="/signup" element={<UserSignUp />} />
         <Route
-          path="/login"
-          element={<UserLogin/>}
+          path="/account"
+          element={
+            <RequireAuthentication isAuthenticated={isAuthenticated}>
+              <Account title="Account" />
+            </RequireAuthentication>
+          }
         />
-        <Route path="/account" element={<Account title="Account" />}></Route>
         <Route
           path="/inventory"
-          element={<Inventory title="Inventory" />}
-        ></Route>
-        <Route path="/signup" element={<UserSignUp />} />
-        <Route path="/support" element={<SupportTicket />} />
-        <Route path="/project" element={<Project />} />
-        <Route path="/existingproject" element={<ExistingProject />} />
-        <Route path="newproject" element={<NewProject />} />
+          element={
+            <RequireAuthentication isAuthenticated={isAuthenticated}>
+              <Inventory title="Inventory" />
+            </RequireAuthentication>
+          }
+        />
+
+        <Route
+          path="/support"
+          element={
+            <RequireAuthentication isAuthenticated={isAuthenticated}>
+              <SupportTicket />
+            </RequireAuthentication>
+          }
+        />
+        <Route
+          path="/project"
+          element={
+            <RequireAuthentication isAuthenticated={isAuthenticated}>
+              <Project />
+            </RequireAuthentication>
+          }
+        />
+        <Route
+          path="/existingproject"
+          element={
+            <RequireAuthentication isAuthenticated={isAuthenticated}>
+              <ExistingProject />
+            </RequireAuthentication>
+          }
+        />
+        <Route
+          path="newproject"
+          element={
+            <RequireAuthentication isAuthenticated={isAuthenticated}>
+              <NewProject />
+            </RequireAuthentication>
+          }
+        />
 
         <Route path="*" element={<Missing title="Page Not Found" />}></Route>
       </Routes>

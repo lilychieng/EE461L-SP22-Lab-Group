@@ -22,14 +22,8 @@ export default function Inventory() {
   const [items, setItems] = useState([]);
   const [keyword, setKeyword] = useState();
 
-  // const handleSearch = (e) => {
-  //   setKeyword(e.target.value);
-
-  // };
-
   const handleSearch = (e) => {
     let keyword = e.target.value;
-    console.log(keyword);
     let tmp = data.filter(function (item) {
       return (
         item.name.toLowerCase().includes(keyword.toLowerCase()) ||
@@ -46,12 +40,30 @@ export default function Inventory() {
 
   return (
     <>
-      <TextField label="Search" fullWidth onChange={handleSearch} />
-      <Box>
+      <h2>My Dashboard</h2>
+      <TextField
+        label="Search"
+        fullWidth
+        onChange={handleSearch}
+        style={{ margin: "20px" }}
+      />
+
+      <div
+        className="card"
+        style={{
+          maxWidth: "1000px",
+          display: "grid",
+          gridGap: "1rem",
+          margin: "0 auto",
+          paddingBottom: '100px'
+        }}
+      >
         {itemsToDisplay.map((item, i) => (
-          <li style={{'listStyleType': 'none'}} key={i}>{<ItemCard item={item} />}</li>
+          <li style={{ listStyleType: "none" }} key={i}>
+            {<ItemCard item={item} />}
+          </li>
         ))}
-      </Box>
+      </div>
     </>
   );
 }

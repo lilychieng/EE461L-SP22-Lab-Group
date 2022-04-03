@@ -9,7 +9,6 @@ import "../../css/App.css"
 
 function ItemCard({item}) {
   return (
-    <div className="card" style={{"maxWidth": "1000px", "margin": "0 auto", "display": "grid", "gridGap": "1rem", "margin":"20px"}}>
       <Card>
         <CardMedia
           component="img"
@@ -30,7 +29,6 @@ function ItemCard({item}) {
           <Button size="small">Return </Button>
         </CardActions>
       </Card>
-      </div>
   );
 }
 
