@@ -64,6 +64,29 @@ def x():
    collection = c.Checkout.Projects
    collection.insert_one(newDoc)
 
+@app.route('/user/signup', methods=["POST"])
+def signup():
+   req = json.loads(request.data)
+   payload = req['data']
+
+   username = payload['username']
+   password = sha256(payload['password'].encode('UTF-8')).hexdigest()
+
+   classes = payload['classes']
+   status = payload['status']
+
+   collection = c.Checkout.Users
+   matched = collection.find_one({'user': username})
+   
+   if matched != None:
+      return 'user already exists'
+
+   newUser = Users(username, password)
+   newUser.set_status(status)
+   newUser.set_classes(classes)
+   newDoc = newUser.to_database()
+   collection.insert_one(newDoc)
+
 '''
 Route: login
 
