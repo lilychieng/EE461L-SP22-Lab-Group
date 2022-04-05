@@ -19,6 +19,21 @@ c = ""
 def index():
    return 'Hello world'
 
+@app.route('/projects/', methods=["POST"])
+def create_project():
+   req = json.loads(request.data)
+   payload = req['data']
+
+   name = payload['name']
+   contributors = payload['contributors']
+   description = payload['description']
+   demo = payload['demo']
+
+   newProject = project(name, contributors, description, demo)
+   newDoc = project.toDB
+   collection = c.Checkout.Projects
+   collection.insert_one(newDoc)
+   
 '''
 Route: signup
 
@@ -39,7 +54,13 @@ def signup():
    password = sha256(payload['password'].encode('UTF-8')).hexdigest()   #Hashed password
    
    user = Users(username, password)                                     #User object
+
+   collection = c.Checkout.Users
+   matched = collection.find_one({'user': username})
    
+   if matched != None:
+      return 'user already exists', 400
+
    #TODO: 300 code for existing user, do user validation later
    
    try:
@@ -48,44 +69,6 @@ def signup():
       return "failed to register user", 500
    else:
       return "successfully registered", 200
-   
-@app.route('/projects/', methods=["POST"])
-def x():
-   req = json.loads(request.data)
-   payload = req['data']
-
-   name = payload['name']
-   contributors = payload['contributors']
-   description = payload['description']
-   demo = payload['demo']
-
-   newProject = project(name, contributors, description, demo)
-   newDoc = project.toDB
-   collection = c.Checkout.Projects
-   collection.insert_one(newDoc)
-
-@app.route('/user/signup/', methods=["POST"])
-def signup():
-   req = json.loads(request.data)
-   payload = req['data']
-
-   username = payload['username']
-   password = sha256(payload['password'].encode('UTF-8')).hexdigest()
-
-   classes = payload['classes']
-   status = payload['status']
-
-   collection = c.Checkout.Users
-   matched = collection.find_one({'user': username})
-   
-   if matched != None:
-      return 'user already exists'
-
-   newUser = Users(username, password)
-   newUser.set_status(status)
-   newUser.set_classes(classes)
-   newDoc = newUser.to_database()
-   collection.insert_one(newDoc)
 
 '''
 Route: login
@@ -111,7 +94,7 @@ def login():
    collection = c.Checkout.Users
    matched = collection.find_one({'user': username})
    
-   if matched == None:
+   if matched is None:
       return 'user not found'
    elif (matched['password'] == password):
       return 'success'
