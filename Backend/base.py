@@ -15,7 +15,7 @@ config = ConfigParser()
 c = ""
 
 #Static route example
-@app.route('/home/')
+@app.route('/')
 def index():
    return 'Hello world'
 
@@ -49,7 +49,7 @@ def signup():
    else:
       return "successfully registered", 200
    
-@app.route('/projects', methods=["POST"])
+@app.route('/projects/', methods=["POST"])
 def x():
    req = json.loads(request.data)
    payload = req['data']
@@ -64,7 +64,7 @@ def x():
    collection = c.Checkout.Projects
    collection.insert_one(newDoc)
 
-@app.route('/user/signup', methods=["POST"])
+@app.route('/user/signup/', methods=["POST"])
 def signup():
    req = json.loads(request.data)
    payload = req['data']
@@ -98,9 +98,11 @@ Returns:
 401 - User password in credentials does not match an existing entry
 200 - Successful user login
 '''
-@app.route('/user/login', methods=["POST"])
+@app.route('/user/login/', methods=["POST"])
 def login():
    req = json.loads(request.data)
+   print(req, flush=True)
+   
    payload = req['data']
 
    username = payload['username']                                       #Plaintext username
