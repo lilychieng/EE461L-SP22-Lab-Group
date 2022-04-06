@@ -2,12 +2,15 @@ from datetime import datetime, timedelta
 
 class CheckoutReceipt:
 
-    def __init__(self, user, quantity):
+    def __init__(self, r_id, p_id, user, quantity):
+        self.receipt_id = r_id
+        self.__project_id = p_id
+        self.__returned = False
+        
         self.__user = user
         self.__quantity = quantity
         self.__checkout = datetime.now()
-        self.returned = False
-
+        
     def extend_due_date(self, num_days:int, num_hrs:int, num_mins:int):
         '''
         Updates the due date for any CheckoutReceipt with an extension

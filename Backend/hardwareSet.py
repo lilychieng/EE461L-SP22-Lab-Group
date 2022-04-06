@@ -3,7 +3,6 @@ class HardwareSet:
     def __init__(self, qty, class_name):
         self.__capacity = qty
         self.__availability = qty
-        self.__receipts = []
         self.__class_name = class_name
 
     def get_availability(self):
@@ -19,7 +18,7 @@ class HardwareSet:
         return self.__capacity - self.__availability
         
     #TODO augment to create receipts when checking out
-    def check_out(self, qty):
+    def check_out(self, user, qty):
         # checks out qty numbers of units
         # update availability to availability - qty
         
@@ -35,7 +34,7 @@ class HardwareSet:
         return 0  # success
     
     #TODO augment to remove receipts when checking in 
-    def check_in(self, qty):
+    def check_in(self, user, qty):
         # update the number of units 
         self.__availability += qty
     

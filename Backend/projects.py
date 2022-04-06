@@ -1,5 +1,5 @@
 
-class project:
+class Project:
 
     def __init__(self, name, contributors, description, demo):
         self.__name = name
@@ -54,7 +54,7 @@ class project:
         return
 
     #send to mongodb
-    def toDB(self):
+    def to_db(self):
         db = {
         "Name": self.__name,
         "Contributors": self.__contributors,

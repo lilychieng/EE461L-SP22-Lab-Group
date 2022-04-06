@@ -1,11 +1,21 @@
 from datetime import date, datetime
+from enum import Enum
+
+class Status(Enum):
+    STUDENT = 0
+    EMPLOYEE = 1
+    ADMIN = 2
+    OWNER = 3
 
 class Users:
     def __init__(self, username, password):
         self.__username = username
         self.__password = password
+        self.__receipts = []
+        self.__projects = []
         self.__classes = []
-        self.__status = "Student"
+
+        self.__status = Status.STUDENT
         self.__timeCreated =  datetime.now()
     
     def get_username(self):
@@ -48,9 +58,25 @@ class Users:
             return False
         return True
 
+    def add_receipt(self, receipt):
+        self.__receipts.append(receipt)
+        
+    '''
+    Returns -1 if no receipt with ID matching `remove_id` was found.
+    Returns 0 upon successful removal of receipt with ID `remove_id`
+    '''
+    def remove_receipt(self, remove_id):
+        for receipt in self.__receipts:
+            if receipt.id == remove_id:
+                self.__receipts.remove(receipt)
+                return 0
+        return -1
+
     def to_database(self):
-        return {"user": self.__username, 
-                "created-on": self.__timeCreated, 
-                "password": self.__password, 
-                "classes": self.__classes, 
-                "status": self.__status}
+        return {
+            "user": self.__username, 
+            "created-on": self.__timeCreated, 
+            "password": self.__password, 
+            "classes": self.__classes, 
+            "status": self.__status
+        }
