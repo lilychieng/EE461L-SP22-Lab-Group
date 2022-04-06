@@ -18,7 +18,7 @@ c = ""
 #Static route example
 @app.route('/')
 def index():
-   return 'Hello world'
+   return app.send_static_file('index.html')
 
 @app.route('/projects/', methods=["POST"])
 def create_project():
