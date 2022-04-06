@@ -1,3 +1,5 @@
+cryptography==3.4.7
+configparser==3.5.3
 anyio==3.5.0
 argon2-cffi==21.3.0
 argon2-cffi-bindings==21.2.0
@@ -86,4 +88,4 @@ wcwidth==0.2.5
 webencodings==0.5.1
 websocket-client==1.2.3
 Werkzeug==2.1.0
-zipp==3.7.0
+zipp==3.7.0 
