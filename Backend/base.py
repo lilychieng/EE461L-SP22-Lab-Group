@@ -10,7 +10,7 @@ from Users import Users
 from projects import project
 import certifi
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../ee_461l_frontend/build", static_url_path="") 
 CORS(app, supports_credentials=True)
 config = ConfigParser()
 c = ""
