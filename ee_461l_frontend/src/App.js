@@ -56,7 +56,7 @@ function App() {
             </RequireAuthentication>
           }
         />
-        <Route
+        {/* <Route
           path="/existingproject"
           element={
             <RequireAuthentication isAuthenticated={isAuthenticated}>
@@ -71,7 +71,7 @@ function App() {
               <NewProject />
             </RequireAuthentication>
           }
-        />
+        /> */}
         <Route path="*" element={<Missing title="Page Not Found" />}></Route>
       </Routes>
       </UserProvider>

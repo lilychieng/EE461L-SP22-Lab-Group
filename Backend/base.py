@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for, request, jsonify, abort, Response
+from bson import json_util, ObjectId
 import json
 from pymongo import MongoClient
 from cryptography.fernet import Fernet
@@ -6,7 +7,7 @@ from configparser import ConfigParser
 from hashlib import sha256
 from flask_cors import CORS, cross_origin
 from Users import Users
-from Projects import Project
+from projects import Project
 import certifi
 
 app = Flask(__name__)
@@ -19,19 +20,32 @@ c = ""
 def index():
    return app.send_static_file('index.html')
 
-@app.route('/projects/', methods=["POST"])
+@app.route('/projects/', methods=["GET"])
+def get_projects():
+   projects = []
+   collection = c.Checkout.Projects
+   cursor = collection.find({})
+   for document in cursor:
+      print(document)
+      page_sanitized = json.loads(json_util.dumps(document))
+      projects.append(page_sanitized)
+   return jsonify(projects)
+
+@app.route('/projects/create/', methods=["POST"])
 def create_project():
    req = json.loads(request.data)
+   print(req)
    payload = req['data']
 
    name = payload['name']
-   contributors = payload['contributors']
+   id = payload['projectID']
    description = payload['description']
    demo = payload['demo']
 
-   newProject = Project(name, contributors, description, demo)
+   newProject = Project(name, id, description, demo)
    collection = c.Checkout.Projects
-   collection.insert_one(Project.to_db())
+   collection.insert_one(newProject.to_db())
+   return "Project sucessfully added!"
 
 '''
 Route: signup

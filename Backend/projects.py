@@ -1,9 +1,10 @@
 
 class Project:
 
-    def __init__(self, name, contributors, description, demo):
+    def __init__(self, name, projectId, description, demo):
         self.__name = name
-        self.__contributors = list(contributors)
+        self.__contributors = []
+        self.__projectId = projectId
         self.__description = description
         self.__demo = demo
 
@@ -58,6 +59,7 @@ class Project:
         db = {
         "Name": self.__name,
         "Contributors": self.__contributors,
+        "ID": self.__projectId,
         "Description": self.__description,
         "Demo": self.__demo
         }

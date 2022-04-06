@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Box from "@mui/material/Box";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import { Stack } from "@mui/material";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import MenuItem from "@mui/material/MenuItem";
 import "../../css/styling.css";
+import { useUser } from "../../hooks/UserContext";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -40,97 +36,76 @@ const groups = [
   },
 ];
 
+const axios = require("axios").default;
+
 function ExistingProject() {
-  const [alignment, setAlignment] = React.useState("existing");
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const [isLoading, setIsLoading] = useState(true);
+  const user = useUser();
+  const [projectData, setProjectData] = useState([{}]);
+  const [projects, setProjects] = useState("");
+  const handleProjectChange = (e) => {
+    setProjects(e.target.value);
   };
 
-  const [group, setGroup] = React.useState("");
-  const handleGroupChange = (event) => {
-    setGroup(event.target.value);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/projects/")
+      .then(function (response) {
+        let data = [];
+        response.data.forEach((e) => {
+          let projectDic = {
+            id: e._id.$oid,
+            name: e.Name,
+            projectID: e.ID,
+          };
+
+          data.push(projectDic);
+        });
+        setIsLoading(false);
+        setProjectData(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
+  const handleSubmit = () => {
+    // API request to the backend
+    // params user and project id
+    console.log(projects);
   };
 
   return (
-    <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": { m: 1, width: "50ch" },
-      }}
-      noValidate
-    >
-      <div>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Item>
-              <h1>Projects</h1>
-            </Item>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Item>
-              <ToggleButtonGroup
-                color="primary"
-                value={alignment}
-                exclusive
-                onChange={handleChange}
-                size="small"
-              >
-                <Link to="/project" id="remove-underline">
-                  <ToggleButton value="my">My Projects</ToggleButton>
-                </Link>
-                <Link to="/newproject" id="remove-underline">
-                  <ToggleButton value="new">New Project</ToggleButton>
-                </Link>
-                <Link to="/existingproject" id="remove-underline">
-                  <ToggleButton value="existing">Existing Project</ToggleButton>
-                </Link>
-              </ToggleButtonGroup>
-            </Item>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Item>
-              <h3>Join Existing Project</h3>
-            </Item>
-          </Grid>
-
-          {/* Groups Drop Down */}
-          <Grid item xs={12}>
-            <Item>
-              <TextField
-                id="outlined-select-group"
-                select
-                label="Group"
-                value={group}
-                onChange={handleGroupChange}
-                helperText="Please select a group."
-              >
-                {groups.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Item>
-          </Grid>
-
-          {/* Create */}
-          <Grid item xs={12}>
-            <Item>
-              <Button
-                justifyContent="center" //??? useless man
-                variant="outlined"
-                size="small"
-                // onClick={handleSubmit}
-              >
-                Join
-              </Button>
-            </Item>
-          </Grid>
-        </Grid>
-      </div>
-    </Box>
+    <div>
+      <Item>
+        <h3>Join Existing Project</h3>
+      </Item>
+      <Item>
+        {!isLoading ? (
+          <TextField
+            id="outlined-select-group"
+            select
+            label="Group"
+            value={projects}
+            onChange={handleProjectChange}
+            helperText="Please select a project."
+          >
+            {projectData.map((option) => (
+              <MenuItem key={option.id} value={option.projectID}>
+                {option.name} ({option.projectID})
+              </MenuItem>
+            ))}
+          </TextField>
+        ) : (
+          <CircularProgress />
+        )}
+      </Item>
+      <Item>
+        <Button variant="outlined" size="small" onClick={handleSubmit}>
+          Join
+        </Button>
+      </Item>
+    </div>
   );
 }
 
