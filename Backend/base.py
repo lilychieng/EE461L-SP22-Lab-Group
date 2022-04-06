@@ -5,13 +5,13 @@ from pymongo import MongoClient
 from cryptography.fernet import Fernet
 from configparser import ConfigParser
 from hashlib import sha256
-from flask_cors import CORS, cross_origin
+# from flask_cors import CORS, cross_origin
 from Users import Users
 from projects import project
 import certifi
 
 app = Flask(__name__, static_folder="../ee_461l_frontend/build", static_url_path="") 
-CORS(app, supports_credentials=True)
+# CORS(app, supports_credentials=True)
 config = ConfigParser()
 c = ""
 
