@@ -44,7 +44,7 @@ Returns:
 200 - Succesful user registration in the database
 '''
 @app.route('/user/signup/', methods=["POST"])
-@cross_origin(supports_credentials=True)
+# @cross_origin(supports_credentials=True)
 def signup():
    req = json.loads(request.data)
    payload = req['data']
@@ -81,7 +81,7 @@ Returns:
 200 - Successful user login
 '''
 @app.route('/user/login/', methods=["POST"])
-@cross_origin(supports_credentials=True)
+# @cross_origin(supports_credentials=True)
 def login():
    req = json.loads(request.data)
    print(req, flush=True)
