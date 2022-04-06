@@ -8,6 +8,7 @@ from hashlib import sha256
 from flask_cors import CORS, cross_origin
 from Users import Users
 from projects import project
+import certifi
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -45,7 +46,7 @@ Returns:
 200 - Succesful user registration in the database
 '''
 @app.route('/user/signup/', methods=["POST"])
-#@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=True)
 def signup():
    req = json.loads(request.data)
    payload = req['data']
@@ -82,6 +83,7 @@ Returns:
 200 - Successful user login
 '''
 @app.route('/user/login/', methods=["POST"])
+@cross_origin(supports_credentials=True)
 def login():
    req = json.loads(request.data)
    print(req, flush=True)
@@ -107,9 +109,10 @@ if __name__ == '__main__':
    config.read("db_config.ini")
    key = Fernet(config.get("Credentials", "Key").encode('UTF-8'))
    password = key.decrypt(config.get("Credentials", "Password").encode('UTF-8')).decode('UTF-8')
+   ca = certifi.where()
 
    #Establish connection to cloud DB
-   c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority")
+   c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
 
    #Establish Flask instance
    app.run(debug=True)
