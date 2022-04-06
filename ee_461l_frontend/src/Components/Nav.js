@@ -1,14 +1,16 @@
 import { Button } from "@mui/material";
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useUserUpdate } from "../hooks/UserContext";
 
 const Nav = () => {
+  const setUser = useUserUpdate();
   const nav = useNavigate();
   const currRoute = useLocation();
 
   return (
     <nav className="Nav">
-      <h1 style={{ "padding-left": "20px" }}>EER Checkout</h1>
+      <h1 style={{ "paddingLeft": "20px" }}>EER Checkout</h1>
       <ul>
         <li>
           <Button
@@ -48,7 +50,7 @@ const Nav = () => {
           </Button>
         </li>
         <li>
-          <Button onClick={() => nav("/login")}>Logout</Button>
+          <Button onClick={() => nav("/login") && setUser(null)}>Logout</Button>
         </li>
       </ul>
     </nav>

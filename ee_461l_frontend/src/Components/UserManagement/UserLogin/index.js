@@ -8,10 +8,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
 import Header from "../../Header";
+import { useUserUpdate } from "../../../hooks/UserContext";
 
 const axios = require("axios").default;
 
 function UserManagement({setAuthenticated}) {
+  const setUser = useUserUpdate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState(false);
@@ -50,6 +52,7 @@ function UserManagement({setAuthenticated}) {
           setErrorMessage("Password is incorrect.");
         } else {
           setAuthenticated(true);
+          setUser(username);
           setIsLoading(true);
           nav('/inventory');
         }

@@ -12,12 +12,14 @@ import UserSignUp from "./Components/UserManagement/UserSignUp";
 import SupportTicket from "./Components/SupportTicket";
 import UserLogin from "./Components/UserManagement/UserLogin";
 import RequireAuthentication from "./RequireAuthentication";
+import { UserProvider } from "./hooks/UserContext";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(false);
 
   return (
     <div className="App">
+      <UserProvider>
       <Routes>
         <Route path="/login" element={<UserLogin setAuthenticated={setAuthenticated}/>} />
         <Route path="/signup" element={<UserSignUp />} />
@@ -37,7 +39,7 @@ function App() {
             </RequireAuthentication>
           }
         />
-
+        
         <Route
           path="/support"
           element={
@@ -70,9 +72,9 @@ function App() {
             </RequireAuthentication>
           }
         />
-
         <Route path="*" element={<Missing title="Page Not Found" />}></Route>
       </Routes>
+      </UserProvider>
       <Footer />
     </div>
   );

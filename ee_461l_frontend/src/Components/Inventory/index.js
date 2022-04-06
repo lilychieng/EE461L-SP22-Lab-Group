@@ -45,7 +45,7 @@ export default function Inventory() {
         label="Search"
         fullWidth
         onChange={handleSearch}
-        style={{ margin: "20px" }}
+        style={{ "marginBottom": "20px" }}
       />
 
       <div
