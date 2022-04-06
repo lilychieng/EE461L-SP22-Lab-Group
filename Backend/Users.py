@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from enum import Enum
+from enum import Enum, IntEnum
 
 class Status(Enum):
     STUDENT = 0
@@ -7,6 +7,9 @@ class Status(Enum):
     ADMIN = 2
     OWNER = 3
 
+    def __int__(self):
+        return self.value
+        
 class Users:
     def __init__(self, username, password):
         self.__username = username
@@ -78,5 +81,5 @@ class Users:
             "created-on": self.__timeCreated, 
             "password": self.__password, 
             "classes": self.__classes, 
-            "status": self.__status
+            "status": int(self.__status)
         }

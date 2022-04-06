@@ -56,7 +56,7 @@ def signup():
 
    collection = c.Checkout.Users
    matched = collection.find_one({'user': username})
-   
+   print(user.to_database(), flush=True)
    if matched != None:
       return 'user already exists', 400
 
@@ -64,7 +64,8 @@ def signup():
    
    try:
       t_id = c.Checkout.Users.insert_one(user.to_database()).inserted_id
-   except:
+   except Exception as e:
+      print(e, flush=True)
       return "failed to register user", 500
    else:
       return "successfully registered", 200
@@ -93,7 +94,7 @@ def login():
 
    collection = c.Checkout.Users
    matched = collection.find_one({'user': username})
-   
+
    if matched is None:
       return 'user not found'
    elif (matched['password'] == password):
