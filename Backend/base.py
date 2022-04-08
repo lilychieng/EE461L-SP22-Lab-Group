@@ -20,6 +20,37 @@ c = ""
 def index():
    return app.send_static_file('index.html')
 
+@app.route('/checkin/', methods=["POST"])
+def checkin():  
+   req = json.loads(request.data)
+   payload = req['data']
+
+   project_id = payload['project_id']
+   HWSet_id = payload['HWSet_id']
+   user = payload['user']
+   checkin_qty = payload['checkin_qty']
+
+   collection = c.Checkout.HWSets
+   matched = collection.find_one({'_id': ObjectId(HWSet_id)})
+   matched.check_in(checkin_qty)
+   collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
+
+@app.route('/checkout/', methods=["POST"])
+def checkout():
+   req = json.loads(request.data)
+   payload = req['data']
+
+   project_id = payload['project_id']
+   HWSet_id = payload['HWSet_id']
+   user = payload['user']
+   checkout_qty = payload['checkout_qty']
+
+   collection = c.Checkout.HWSets
+   matched = collection.find_one({'_id': ObjectId(HWSet_id)})
+   matched.check_out(checkout_qty)
+   collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
+
+
 @app.route('/projects/join/', methods=["POST"])
 def join_users_projects():
    user_id = request.args.get('user_id')
