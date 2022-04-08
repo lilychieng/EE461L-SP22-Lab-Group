@@ -32,8 +32,11 @@ def checkin():
 
    collection = c.Checkout.HWSets
    matched = collection.find_one({'_id': ObjectId(HWSet_id)})
+   # Need a way to make sure checkin_qty doesn't exceed the amount checked out
    matched.check_in(checkin_qty)
    collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
+   # Check if all hardwareSets have been returned, and if so, then remove the id from project
+   return "Successful Checkin"
 
 @app.route('/checkout/', methods=["POST"])
 def checkout():
@@ -47,9 +50,18 @@ def checkout():
 
    collection = c.Checkout.HWSets
    matched = collection.find_one({'_id': ObjectId(HWSet_id)})
+
+   if (matched.get_availability() < checkout_qty):
+      return "checkout_qty is larger than availability"
+
    matched.check_out(checkout_qty)
    collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
 
+   collection = c.Checkout.Projects
+   project = collection.find_one({'project_id': project_id})
+   # Check if HWSet_id is stored in project
+   # If not, then add the id to project
+   return "Successful Checkout"
 
 @app.route('/projects/join/', methods=["POST"])
 def join_users_projects():
