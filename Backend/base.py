@@ -86,8 +86,11 @@ def create_project():
    description = payload['description']
    demo = payload['demo']
 
-   newProject = Project(name, id, description, demo)
    collection = c.Checkout.Projects
+   matched = collection.find_one({'ID': id})
+   if(matched is not None):
+      return "Project ID is taken"
+   newProject = Project(name, id, description, demo)
    collection.insert_one(newProject.to_db())
    return "Project sucessfully added!"
 

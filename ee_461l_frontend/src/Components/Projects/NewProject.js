@@ -56,6 +56,10 @@ function NewProject() {
         if (response.data === "Project sucessfully added!") {
           setIsLoading(false);
           setSucess(true);
+        } else if (response.data === "Project ID is taken"){
+          setIsLoading(false);
+          setError(true);
+          setErrorMessage('Project ID is taken');
         }
       })
       .catch(function (error) {

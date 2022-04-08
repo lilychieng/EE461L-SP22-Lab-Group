@@ -11,7 +11,7 @@ import { Alert } from "@mui/material";
 const axios = require("axios").default;
 
 function UserSignUp() {
-  const [success, setSucess] = useState(false)
+  const [success, setSuccess] = useState(false)
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [password2, setPassword2] = useState();
@@ -54,6 +54,7 @@ function UserSignUp() {
         })
         .then(function (response) {
           console.log(response);
+          setSuccess(true);
         })
         .catch(function (error) {
           console.log(error);
