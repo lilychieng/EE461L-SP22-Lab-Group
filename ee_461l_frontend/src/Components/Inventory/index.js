@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ItemCard from "../Item";
+import NewItem from "../Item/NewItem";
 
 /*
  * data is a temp variable to mock the HWSets recieved from the Backend
@@ -21,7 +22,6 @@ const projects = ["Test123", "Test429"];
 export default function Inventory() {
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
   const [items, setItems] = useState([]);
-  const [keyword, setKeyword] = useState();
 
   const handleSearch = (e) => {
     let keyword = e.target.value;
@@ -67,18 +67,8 @@ export default function Inventory() {
                 {<ItemCard item={item} />}
               </li>
             ))}
-            <li>
-              {
-                <ItemCard
-                  item={{
-                    name: "Poop",
-                    capacity: 200,
-                    avail: 120,
-                    class: "EE 319K",
-                    img: "",
-                  }}
-                />
-              }
+            <li style={{ listStyleType: "none" }}>
+              <NewItem />
             </li>
           </div>
         </>
