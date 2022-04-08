@@ -81,5 +81,6 @@ class Users:
             "created-on": self.__timeCreated, 
             "password": self.__password, 
             "classes": self.__classes, 
+            "projects": self.__projects,
             "status": int(self.__status)
         }

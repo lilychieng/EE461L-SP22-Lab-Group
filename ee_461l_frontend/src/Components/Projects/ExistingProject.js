@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import "../../css/styling.css";
 import { useUser } from "../../hooks/UserContext";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Alert } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -17,39 +18,25 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
-const groups = [
-  {
-    value: "USD",
-    label: "Static 1",
-  },
-  {
-    value: "EUR",
-    label: "Static 2",
-  },
-  {
-    value: "BTC",
-    label: "Static 3",
-  },
-  {
-    value: "JPY",
-    label: "Static 4",
-  },
-];
-
 const axios = require("axios").default;
 
 function ExistingProject() {
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   const user = useUser();
   const [projectData, setProjectData] = useState([{}]);
   const [projects, setProjects] = useState("");
   const handleProjectChange = (e) => {
+    setError(false);
+    setSuccess(false);
     setProjects(e.target.value);
   };
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/projects/")
+      .get("http://localhost:5000/projects/all/")
       .then(function (response) {
         let data = [];
         response.data.forEach((e) => {
@@ -70,8 +57,24 @@ function ExistingProject() {
   }, []);
 
   const handleSubmit = () => {
-    // API request to the backend
-    // params user and project id
+    axios
+      .post("http://localhost:5000/projects/join/?user_id=" + user, {
+        data: {
+          projectID: projects,
+        },
+      })
+      .then(function (response) {
+        if(response.data === "Already a member"){
+          setError(true);
+          setErrorMessage("Already apart of Project " + projects);
+        } else if (response.data === "Sucessfully joined the group"){
+          setSuccess(true);
+        }
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     console.log(projects);
   };
 
@@ -80,6 +83,10 @@ function ExistingProject() {
       <Item>
         <h3>Join Existing Project</h3>
       </Item>
+      {error && <Alert severity="error">{errorMessage}</Alert>}
+      {success && (
+        <Alert>Project {projects} sucessfully joined!</Alert>
+      )}
       <Item>
         {!isLoading ? (
           <TextField

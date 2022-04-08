@@ -20,7 +20,51 @@ c = ""
 def index():
    return app.send_static_file('index.html')
 
-@app.route('/projects/', methods=["GET"])
+@app.route('/projects/join/', methods=["POST"])
+def join_users_projects():
+   user_id = request.args.get('user_id')
+   req = json.loads(request.data)
+   payload = req['data']
+   project_id = payload['projectID']
+
+   try:
+      # Update project to the User
+      collection = c.Checkout.Users
+      matched = collection.find_one({'_id': ObjectId(user_id)})
+      print(matched)
+      projects = matched['projects']
+      if(project_id in projects):
+         return "Already a member"
+      projects.append(project_id)
+      collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'projects': projects}})
+
+      # Update project by adding the User
+      collection = c.Checkout.Projects
+      matched = collection.find_one({'ID': project_id})
+      contribs = matched['Contributors']
+      contribs.append(user_id)
+      collection.update_one({'ID': project_id}, {'$set': {'Contributors': contribs}})
+   except Exception as e:
+      print(e)
+      return "There was an error with your request"
+   else:
+      return "Sucessfully joined the group"
+
+# Returns all projects that a single user is a part of
+@app.route('/projects/user/')
+def get_users_projects():
+   user_id = request.args.get('user_id')
+   collection = c.Checkout.Users
+   matched = collection.find_one({'_id': ObjectId(user_id)})
+
+   if(matched is None):
+      return "User not found"
+   else:
+      page_sanitized = json.loads(json_util.dumps(matched))
+      return jsonify(page_sanitized['projects'])
+
+# Get all projects on the database
+@app.route('/projects/all/', methods=["GET"])
 def get_projects():
    projects = []
    collection = c.Checkout.Projects
@@ -112,7 +156,7 @@ def login():
    if matched is None:
       return 'user not found'
    elif (matched['password'] == password):
-      return 'success'
+      return {'message': 'success', 'user_id': json.loads(json_util.dumps(matched))['_id']['$oid']}
    else:
       return 'user credentials do not match'
 

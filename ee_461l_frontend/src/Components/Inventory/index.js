@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ItemCard from "../Item";
@@ -16,6 +15,8 @@ const data = [
   { name: "Arduino Uno", capacity: 429, avail: 123, class: "EE 316", img: "" },
   { name: "Raspberry Pi", capacity: 842, avail: 624, class: "EE 316", img: "" },
 ];
+
+const projects = ["Test123", "Test429"];
 
 export default function Inventory() {
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
@@ -45,25 +46,43 @@ export default function Inventory() {
         label="Search"
         fullWidth
         onChange={handleSearch}
-        style={{ "marginBottom": "20px" }}
+        style={{ marginBottom: "20px" }}
       />
 
-      <div
-        className="card"
-        style={{
-          maxWidth: "1000px",
-          display: "grid",
-          gridGap: "1rem",
-          margin: "0 auto",
-          paddingBottom: '100px'
-        }}
-      >
-        {itemsToDisplay.map((item, i) => (
-          <li style={{ listStyleType: "none" }} key={i}>
-            {<ItemCard item={item} />}
-          </li>
-        ))}
-      </div>
+      {projects.map((project, i) => (
+        <>
+          <h1>{project}</h1>
+          <div
+            className="card"
+            style={{
+              maxWidth: "1000px",
+              display: "grid",
+              gridGap: "1rem",
+              margin: "0 auto",
+              paddingBottom: "100px",
+            }}
+          >
+            {itemsToDisplay.map((item, i) => (
+              <li style={{ listStyleType: "none" }} key={i}>
+                {<ItemCard item={item} />}
+              </li>
+            ))}
+            <li>
+              {
+                <ItemCard
+                  item={{
+                    name: "Poop",
+                    capacity: 200,
+                    avail: 120,
+                    class: "EE 319K",
+                    img: "",
+                  }}
+                />
+              }
+            </li>
+          </div>
+        </>
+      ))}
     </>
   );
 }

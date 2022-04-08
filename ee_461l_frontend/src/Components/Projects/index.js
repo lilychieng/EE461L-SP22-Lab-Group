@@ -41,7 +41,7 @@ function Projects() {
         <ToggleButton value="existing">Existing Project</ToggleButton>
       </ToggleButtonGroup>
 
-      {content === "my" && <MyProject />}
+      {content === "my" && <MyProject setContent={setContent}/>}
       {content === "new" && <NewProject />}
       {content === "existing" && <ExistingProject />}
     </div>

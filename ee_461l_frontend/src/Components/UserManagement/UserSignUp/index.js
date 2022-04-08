@@ -6,10 +6,12 @@ import { styled } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import * as S from "../UserLogin/style";
+import { Alert } from "@mui/material";
 
 const axios = require("axios").default;
 
 function UserSignUp() {
+  const [success, setSucess] = useState(false)
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [password2, setPassword2] = useState();
@@ -64,6 +66,7 @@ function UserSignUp() {
     <div>
       <S.form>
         <div>Sign Up</div>
+        {success && <Alert>Sucessfully Registered</Alert>}
         <TextField
           className={classes.root}
           inputProps={{ className: classes.input }}

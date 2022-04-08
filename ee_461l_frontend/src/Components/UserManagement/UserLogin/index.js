@@ -43,7 +43,8 @@ function UserManagement({setAuthenticated}) {
         },
       })
       .then(function (response) {
-        let responseMessage = response.data;
+        console.log(response);
+        let responseMessage = response.data.message;
         if (responseMessage === "user not found") {
           setError(true);
           setErrorMessage("Username not found.");
@@ -52,7 +53,7 @@ function UserManagement({setAuthenticated}) {
           setErrorMessage("Password is incorrect.");
         } else {
           setAuthenticated(true);
-          setUser(username);
+          setUser(response.data.user_id);
           setIsLoading(true);
           nav('/inventory');
         }
