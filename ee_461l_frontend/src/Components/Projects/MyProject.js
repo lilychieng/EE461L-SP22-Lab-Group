@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 import { useUser } from "../../hooks/UserContext";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -18,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const axios = require("axios").default;
 
-function MyProject({setContent}) {
+function MyProject({ setContent }) {
   const [isLoading, setIsLoading] = useState(true);
   const user = useUser();
   const [projects, setProjects] = useState(null);
@@ -66,11 +67,12 @@ function MyProject({setContent}) {
                 ))}
               </TextField>
             ) : (
-              <div>
-                You are not part of any projects!
-                <Button onClick={() => setContent('existing')}>Click Here To Join Existing Projects</Button>
-                <Button onClick={() => setContent('new')}>Click Here To Create a Projects</Button>
-              </div>
+              <>
+                <Typography>You are not part of any projects!</Typography>
+                <Button onClick={() => setContent("existing")}>Join</Button>
+                or
+                <Button onClick={() => setContent("new")}>Create</Button>
+              </>
             )}
           </>
         )}
