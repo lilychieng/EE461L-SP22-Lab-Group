@@ -66,13 +66,15 @@ class Users:
             return False
         return True
 
+    #Maybe should be removed
     def addProjects(self, project):
         for ids in self.__projects:
             if (ids == project):
                 return
         self.__projects.extend(project)
 
-    def deleteProjects(self, project):
+    #Maybe should be removed
+    def removeProjects(self, project):
         for ids in self.__projects:
             if (ids == project):
                 self.__projects.remove(project)

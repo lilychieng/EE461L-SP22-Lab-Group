@@ -8,6 +8,7 @@ from hashlib import sha256
 from flask_cors import CORS, cross_origin
 from Users import Users
 from projects import Project
+from CheckoutReceipt import CheckoutReceipt
 import certifi
 
 app = Flask(__name__)
@@ -36,6 +37,11 @@ def checkin():
    matched.check_in(checkin_qty)
    collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
    # Check if all hardwareSets have been returned, and if so, then remove the id from project
+   if (matched.getCheckedoutQty() == 0):
+      collection = c.Checkout.Projects
+      project = collection.find_one({'project_id': project_id})
+      project.removeHWSet(HWSet_id)
+      collection.update_one({'project_id': project_id}, project)
    return "Successful Checkin"
 
 @app.route('/checkout/', methods=["POST"])
@@ -57,13 +63,13 @@ def checkout():
    matched.check_out(checkout_qty)
    collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
 
-   #collection = c.Checkout.Projects
-   #project = collection.find_one({'project_id': project_id})
+   collection = c.Checkout.Projects
+   project = collection.find_one({'project_id': project_id})
    # Check if HWSet_id is stored in project
    # If not, then add the id to project
-   user.addProjects(project_id)
-   collection = c.Checkout.Users
-   collection.update_one({"user": user.getUsername()}, user)
+   project.addHWSet(HWSet_id)
+   collection.update_one({'project_id': project_id}, project)
+   #receipt = CheckoutReceipt(HWSet_id, user.getUsername(), checkout_qty)
 
    return "Successful Checkout"
 
