@@ -6,22 +6,27 @@ from cryptography.fernet import Fernet
 from configparser import ConfigParser
 from hashlib import sha256
 from flask_cors import CORS, cross_origin
+import certifi
+
 from Users import Users
 from projects import Project
 from CheckoutReceipt import CheckoutReceipt
-import certifi
+from hardwareSet import HardwareSet
 
 app = Flask(__name__)
 CORS(app, supports_credegntials=True)
 config = ConfigParser()
+#Reference to MongoClient
 c = ""
+#Available HWSets users can check out from
+hardware_sets = []
 
 #Static route example
 @app.route('/')
 def index():
    return app.send_static_file('index.html')
 
-@app.route('/checkin/', methods=["POST"])
+@app.route('/projects/checkin/', methods=["POST"])
 def checkin():  
    req = json.loads(request.data)
    payload = req['data']
@@ -46,7 +51,7 @@ def checkin():
       collection.update_one({'project_id': project_id}, project)
    return "Successful Checkin"
 
-@app.route('/checkout/', methods=["POST"])
+@app.route('/projects/checkout/', methods=["POST"])
 def checkout():
    req = json.loads(request.data)
    payload = req['data']
@@ -110,13 +115,18 @@ def join_users_projects():
 def get_users_projects():
    user_id = request.args.get('user_id')
    collection = c.Checkout.Users
-   matched = collection.find_one({'_id': ObjectId(user_id)})
+   matched = collection.find_one({'_id': ObjectId('625068ca4453786c33e5ec70')})
 
    if(matched is None):
       return "User not found"
-   else:
-      page_sanitized = json.loads(json_util.dumps(matched))
-      return jsonify(page_sanitized['projects'])
+   
+   page_sanitized = json.loads(json_util.dumps(matched))
+   #Query DB given user for all projects in the user's joined project list
+   projects = [json.loads(json_util.dumps(c.Checkout.Projects.find_one({"ID": project_id}))) 
+               for project_id in page_sanitized['projects']]
+   
+   print(projects, flush=True)
+   return jsonify(projects)
 
 # Get all projects on the database
 @app.route('/projects/all/', methods=["GET"])
@@ -143,8 +153,9 @@ def create_project():
 
    collection = c.Checkout.Projects
    matched = collection.find_one({'ID': id})
-   if(matched is not None):
+   if (matched is not None):
       return "Project ID is taken"
+      
    newProject = Project(name, id, description, demo)
    collection.insert_one(newProject.to_db())
    return "Project sucessfully added!"
@@ -231,3 +242,4 @@ if __name__ == '__main__':
 
    #Establish Flask instance
    app.run(debug=True)
+   get_users_projects()

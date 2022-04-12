@@ -2,11 +2,11 @@
 
 class HardwareSet:
     
-    def __init__(self, qty, class_name):
-        self.__capacity = qty
-        self.__availability = qty
+    def __init__(self, capacity, availability, class_name, projects):
+        self.__capacity = capacity
+        self.__availability = availability
         self.__class_name = class_name
-        self.__projects = []
+        self.__projects = projects
 
     def getAvailability(self):
         # return the number of unused units
@@ -41,5 +41,13 @@ class HardwareSet:
         # update the number of units 
         self.__availability += qty
     
+    def toDatabase(self):
+        db = {
+            'name': self.__class_name,
+            'capacity': self.__capacity,
+            'availability': self.__availability,
+            'projects': self.__projects
+        }
+        return db
 
     
