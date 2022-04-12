@@ -57,10 +57,14 @@ def checkout():
    matched.check_out(checkout_qty)
    collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
 
-   collection = c.Checkout.Projects
-   project = collection.find_one({'project_id': project_id})
+   #collection = c.Checkout.Projects
+   #project = collection.find_one({'project_id': project_id})
    # Check if HWSet_id is stored in project
    # If not, then add the id to project
+   user.addProjects(project_id)
+   collection = c.Checkout.Users
+   collection.update_one({"user": user.getUsername()}, user)
+
    return "Successful Checkout"
 
 @app.route('/projects/join/', methods=["POST"])

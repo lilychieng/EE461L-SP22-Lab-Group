@@ -66,6 +66,17 @@ class Users:
             return False
         return True
 
+    def addProjects(self, project):
+        for ids in self.__projects:
+            if (ids == project):
+                return
+        self.__projects.extend(project)
+
+    def deleteProjects(self, project):
+        for ids in self.__projects:
+            if (ids == project):
+                self.__projects.remove(project)
+
     def toDatabase(self):
         return {
             "user": self.__username, 
