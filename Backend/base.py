@@ -33,7 +33,9 @@ def checkin():
 
    collection = c.Checkout.HWSets
    matched = collection.find_one({'_id': ObjectId(HWSet_id)})
-   # Need a way to make sure checkin_qty doesn't exceed the amount checked out
+   # Check if checkin_qty exceeds the amount checked out
+   if (matched.getCheckedoutQty() < checkin_qty):
+      return "checkin_qty is larger than the amount checked out"
    matched.check_in(checkin_qty)
    collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
    # Check if all hardwareSets have been returned, and if so, then remove the id from project
