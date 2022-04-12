@@ -25,7 +25,12 @@ function NewItem() {
   };
 
   const handleCheckOut = () => {
-    if (!regexNumber.test(checkoutNum.current)) {
+    setError(false);
+    if(item === ""){
+      setError(true);
+      return setErrorMessage("An item must be selected");
+    }
+    else if (!regexNumber.test(checkoutNum.current)) {
       setError(true);
       return setErrorMessage("Checkout must be a valid number");
     } else if (parseInt(checkoutNum.current) > item.avail) {

@@ -21,6 +21,7 @@ function App() {
     <div className="App">
       <UserProvider>
       <Routes>
+        <Route path="/" element={<UserLogin setAuthenticated={setAuthenticated}/>} />
         <Route path="/login" element={<UserLogin setAuthenticated={setAuthenticated}/>} />
         <Route path="/signup" element={<UserSignUp />} />
         <Route

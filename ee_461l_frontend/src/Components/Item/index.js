@@ -17,8 +17,12 @@ function ItemCard({ item }) {
 
   return (
     <>
-      <CheckoutModal item={item} setOpen={setOpen} open={open}/>
-      <ReturnModal item={item} setReturnModalOpen={setReturnModalOpen} returnModalOpen={returnModalOpen} />
+      <CheckoutModal item={item} setOpen={setOpen} open={open} />
+      <ReturnModal
+        item={item}
+        setReturnModalOpen={setReturnModalOpen}
+        returnModalOpen={returnModalOpen}
+      />
       <Card>
         <CardMedia
           component="img"
@@ -34,12 +38,13 @@ function ItemCard({ item }) {
             {item.class}: {item.avail}/{item.capacity} Available
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small" onClick={handleOpen}>
-            Check Out
-          </Button>
-          <Button size="small" onClick={handleReturnModalOpen}>Return </Button>
-        </CardActions>
+        <Button size="small" onClick={handleOpen}>
+          Check Out
+        </Button>
+        - or -
+        <Button size="small" onClick={handleReturnModalOpen}>
+          Return{" "}
+        </Button>
       </Card>
     </>
   );

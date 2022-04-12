@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 
-function ReturnModal({item, setReturnModalOpen, returnModalOpen}) {
+function ReturnModal({ item, setReturnModalOpen, returnModalOpen }) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -26,7 +26,11 @@ function ReturnModal({item, setReturnModalOpen, returnModalOpen}) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const handleClose = () => setReturnModalOpen(false);
+  const handleClose = () => {
+    setError(false);
+    setSuccess(false);
+    setReturnModalOpen(false);
+  };
 
   const handleReturn = (e) => {
     setError(false);
@@ -34,6 +38,9 @@ function ReturnModal({item, setReturnModalOpen, returnModalOpen}) {
     if (!regexNumber.test(checkout.current)) {
       setError(true);
       return setErrorMessage("Return amount must be a valid number");
+    } else if (parseInt(checkout.current) === 0) {
+      setError(true);
+      return setErrorMessage("Checkout value cannot be 0");
     } else if (parseInt(checkout.current) > numOfProjectItems) {
       setError(true);
       return setErrorMessage(
@@ -61,7 +68,7 @@ function ReturnModal({item, setReturnModalOpen, returnModalOpen}) {
           </Typography>
           {error && <Alert severity="error">{errorMessage}</Alert>}
           {success && (
-            <Alert>Sucessfully returned out {checkout.current} items</Alert>
+            <Alert>Sucessfully returned {checkout.current} items</Alert>
           )}
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             There are {item.avail} {item.name} left.

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import ItemCard from "../Item";
 import NewItem from "../Item/NewItem";
@@ -75,7 +75,7 @@ export default function Inventory() {
 
               {projects.map((project, i) => (
                 <>
-                  <h1>{project}</h1>
+                  <h1>Project: {project}</h1>
                   <div
                     className="card"
                     style={{
@@ -99,12 +99,12 @@ export default function Inventory() {
               ))}
             </>
           ) : (
-            <div>
-              You are not part of any projects!
+            <>
+              <Typography>You are not part of any projects!</Typography>
               <Button onClick={() => nav("/project")}>
-                Click Here To Go To Projects!
+                Go To Projects
               </Button>
-            </div>
+            </>
           )}
         </>
       ) : (

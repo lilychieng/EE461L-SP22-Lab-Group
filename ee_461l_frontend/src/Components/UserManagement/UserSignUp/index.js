@@ -11,12 +11,12 @@ import { Alert } from "@mui/material";
 const axios = require("axios").default;
 
 function UserSignUp() {
-  const [success, setSuccess] = useState(false)
-  const [username, setUsername] = useState();
+  const [success, setSuccess] = useState(false);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState();
   const [password2, setPassword2] = useState();
   const [error, setError] = useState(false);
-  
+
   const [errorMessage, setErrorMessage] = useState();
   // const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
@@ -44,6 +44,11 @@ function UserSignUp() {
   };
 
   const handleSubmit = () => {
+    setError(false);
+    if (username === "") {
+      setError(true);
+      return setErrorMessage("Enter a username!");
+    }
     if (validatePassword()) {
       axios
         .post("http://localhost:5000/user/signup/", {
@@ -72,7 +77,7 @@ function UserSignUp() {
           className={classes.root}
           inputProps={{ className: classes.input }}
           id="outlined-required"
-          label="Email (@utexas)" 
+          label="Email (@utexas)"
           onChange={handleUsername}
         />
         <TextField
@@ -91,11 +96,19 @@ function UserSignUp() {
           type="password"
           onChange={handlePassword2}
         />
-        <S.error>{error && errorMessage}</S.error>
-        <Button size="small" style={{'backgroundColor':'#2EA64F', 'color':'black'}} onClick={handleSubmit}>
+        {error && <Alert severity="error">{errorMessage}</Alert>}
+        <Button
+          size="small"
+          style={{ backgroundColor: "#2EA64F", color: "black" }}
+          onClick={handleSubmit}
+        >
           Submit
         </Button>
-        <Button size="small" style={{'backgroundColor':'#FFFFFF', 'color':'black'}} onClick={() => nav('/login')}>
+        <Button
+          size="small"
+          style={{ backgroundColor: "#FFFFFF", color: "black" }}
+          onClick={() => nav("/login")}
+        >
           Already a User?
         </Button>
       </S.form>

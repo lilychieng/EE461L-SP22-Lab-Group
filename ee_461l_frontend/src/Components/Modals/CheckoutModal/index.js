@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -24,7 +24,11 @@ function CheckoutModal({ item, setOpen, open }) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setError(false);
+    setSuccess(false)
+    setOpen(false);
+  };
 
   const handleAvail = (e) => {
     setError(false);
@@ -32,6 +36,9 @@ function CheckoutModal({ item, setOpen, open }) {
     if (!regexNumber.test(checkout.current)) {
       setError(true);
       return setErrorMessage("Checkout must be a valid number");
+    } else if (parseInt(checkout.current) === 0) {
+      setError(true);
+      return setErrorMessage("Checkout value cannot be 0");
     } else if (parseInt(checkout.current) > item.avail) {
       setError(true);
       return setErrorMessage(
