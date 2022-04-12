@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from enum import Enum, IntEnum
 
-class Status(Enum):
+class UserPermissions(Enum):
     STUDENT = 0
     EMPLOYEE = 1
     ADMIN = 2
@@ -9,49 +9,54 @@ class Status(Enum):
 
     def __int__(self):
         return self.value
-        
+
 class Users:
     def __init__(self, username, password):
         self.__username = username
         self.__password = password
-        self.__receipts = []
         self.__projects = []
         self.__classes = []
 
-        self.__status = Status.STUDENT
+        self.__status = UserPermissions.STUDENT
         self.__timeCreated =  datetime.now()
     
-    def get_username(self):
+    def getUsername(self):
         return self.__username
         
-    def get_password(self):
+    def getPassword(self):
         return self.__password
     
-    def get_timeCreated(self):
+    def getDateCreated(self):
         return self.__timeCreated
         
-    def get_classes(self):
+    def getClasses(self):
         return self.__classes
 
-    def get_status(self):
+    def getStatus(self):
         return self.__status
 
-    def set_username(self, username):
+    def setUsername(self, username):
         self.__username = username
     
-    def set_password(self, password):
+    def setPassword(self, password):
         self.__password = password
 
-    def set_classes(self, classes):
-        self.__classes = classes
+    '''Takes in list of classes to add'''
+    def addClasses(self, classes):
+        self.__classes.extend(classes)
 
-    def set_status(self, status):
-        self.__status = status
+    def setStatus(self, new_status):
+        if not isinstance(new_status, UserPermissions):
+            return -1
+        else:
+            self.__status = new_status
     
     def updateTime(self):
         self.__timeCreated =  datetime.now()
 
+    #TODO: Move verification methods to a module
     def verifyUsername(self):
+        #TODO: Add regex verification for '@utexas.edu'
         if (len(self.__username) < 8):
             return False
         return True
@@ -61,21 +66,7 @@ class Users:
             return False
         return True
 
-    def add_receipt(self, receipt):
-        self.__receipts.append(receipt)
-        
-    '''
-    Returns -1 if no receipt with ID matching `remove_id` was found.
-    Returns 0 upon successful removal of receipt with ID `remove_id`
-    '''
-    def remove_receipt(self, remove_id):
-        for receipt in self.__receipts:
-            if receipt.id == remove_id:
-                self.__receipts.remove(receipt)
-                return 0
-        return -1
-
-    def to_database(self):
+    def toDatabase(self):
         return {
             "user": self.__username, 
             "created-on": self.__timeCreated, 

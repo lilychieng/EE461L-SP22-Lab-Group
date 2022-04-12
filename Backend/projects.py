@@ -1,12 +1,19 @@
 
+from sqlite3 import dbapi2
+
+
 class Project:
 
-    def __init__(self, name, projectId, description, demo):
+    def __init__(self, name, project_id, description, demo):
         self.__name = name
-        self.__contributors = []
-        self.__projectId = projectId
+        self.__project_id = project_id
         self.__description = description
         self.__demo = demo
+
+        #Only hold contributor usernames
+        self.__contributors = []
+        #References to receipt objects
+        self.__receipts = []
 
     #returns project name string
     def getName(self):
@@ -54,16 +61,35 @@ class Project:
         self.__contributors.remove(id)
         return
 
+    def addReceipt(self, receipt):
+        self.__receipts.append(receipt)
+        
+    '''
+    Returns -1 if no receipt with ID matching `remove_id` was found.
+    Returns 0 upon successful removal of receipt with ID `remove_id`
+    '''
+    def removeReceipt(self, remove_id):
+        for receipt in self.__receipts:
+            if receipt.id == remove_id:
+                self.__receipts.remove(receipt)
+                return 0
+        return -1
+
+    def getReceipts(self):
+        '''Return DB variant
+        db = [receipt.toDatabase() for receipt in self.__receipts]
+        return db
+        '''
+        #Returns references of receipts related to the project
+        return self.__receipts
+
     #send to mongodb
-    def to_db(self):
+    def toDatabase(self):
         db = {
-        "Name": self.__name,
-        "Contributors": self.__contributors,
-        "ID": self.__projectId,
-        "Description": self.__description,
-        "Demo": self.__demo
+            "Name": self.__name,
+            "Contributors": self.__contributors,
+            "ID": self.__project_id,
+            "Description": self.__description,
+            "Demo": self.__demo
         }
         return db
-
-
-    

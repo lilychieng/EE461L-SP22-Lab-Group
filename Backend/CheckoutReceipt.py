@@ -2,16 +2,15 @@ from datetime import datetime, timedelta
 
 class CheckoutReceipt:
 
-    def __init__(self, r_id, p_id, user, quantity):
+    def __init__(self, r_id, user, quantity):
         self.receipt_id = r_id
-        self.__project_id = p_id
         self.__returned = False
         
         self.__user = user
         self.__quantity = quantity
         self.__checkout = datetime.now()
         
-    def extend_due_date(self, num_days:int, num_hrs:int, num_mins:int):
+    def extendDueDate(self, num_days:int, num_hrs:int, num_mins:int):
         '''
         Updates the due date for any CheckoutReceipt with an extension
 
@@ -27,16 +26,27 @@ class CheckoutReceipt:
         self.__checkout = self.__checkout + timedelta(days=num_days, hours=num_hrs, mins=num_mins)
         return self.__checkout
 
-    def get_user(self):
+    def getUser(self):
         '''
         Returns:
         Username corresponding to the receipt
         '''
         return self.__user
     
-    def get_quantity(self):
+    def getQuantity(self):
         '''
         Returns:
         Quantity of board checked out corresponding to the receipt
         '''
         return self.__quantity
+    
+    def toDatabase(self):
+        db = {
+            "ID": self.receipt_id,
+            "Returned": self.__returned,
+            "User": self.__user,
+            "Quantity": self.__quantity,
+            "Time": self.__checkout
+        }
+
+        return db
