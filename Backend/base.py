@@ -22,29 +22,45 @@ c = ""
 #Available HWSets users can check out from
 hardware_sets = []
 
-#Static route example
+'''
+Returns: 
+Static page corresponding to homepage of built frontend
+'''
 @app.route('/')
 def index():
    return app.send_static_file('index.html')
 
-# Get all HWSets that a project doesn't have checked out
-@app.route('/user/not_checked_out_hwSets/', methods=["POST"])
-def not_checked_out_hwSets():
+'''
+Parameters:
+`project_id`: Integer ID corresponding to project
+
+Returns:
+An array of all hardware sets that a project has yet to check out hardware for
+'''
+@app.route('/user/not_checked_out_hw/', methods=["POST"])
+def not_checked_out_hw():
    req = json.loads(request.data)
    payload = req['data']
    project_id = payload['project_id']
-   collection = c.Checkout.Hardware
-   HWSets = collection.find({ 'projects': {'$nin' : [project_id]}})
+
+   #Comprehension of all hardware sets that do not contain a receipt of checked out hw under `project_id`
+   hw = [set for set in c.Checkout.Hardware.find({'projects': {'$not': {'$elemMatch': {'project_id': project_id}}}})]
+
    response = []
-   for document in HWSets:
+
+   for document in hw:
       page_sanitized = json.loads(json_util.dumps(document))
       response.append(page_sanitized)
+      
    return jsonify(response)
 
 '''
+Parameters:
+`user`: Hash string corresponding to ObjectId of user to request project hardware for
+
 Returns: 
 Hardware checked out for all projects a user has registered
-themselves as a member of
+themselves as a member of  
 '''
 @app.route('/user/checked_out_hw/', methods=["POST"])
 def checked_out_hw():
@@ -55,16 +71,16 @@ def checked_out_hw():
    hw_collection = c.Checkout.Hardware
    user_collection = c.Checkout.Users
    #Find all projects a user is registered to
-   matched = user_collection.find_one({'_id': ObjectId(user_id)})
+   matched = user_collection.find_one({'_id': ObjectId('625068ca4453786c33e5ec70')})
    page_sanitized = json.loads(json_util.dumps(matched))
-   
    projects = page_sanitized['projects']
 
    response = []
+
    for p in projects:
       #Comprehension of all hardware sets with hardware loaned to project `p`
-      HWSets = [set for set in c.Checkout.Hardware.find({'projects': {'$elemMatch': {'project_id': p}}})]
-
+      HWSets = [set for set in hw_collection.find({'projects': {'$elemMatch': {'project_id': p}}})]
+   
       project_hw = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
       response.append(project_hw)
    
@@ -73,22 +89,28 @@ def checked_out_hw():
    else:
       return jsonify(response)
 
-@app.route('/user/project/HWSets/', methods=["POST"])
-def get_all_HWSets():
+#TODO: Legacy version of route `checked_out_hw()`, mark for deletion
+@app.route('/user/project/all_hw/', methods=["POST"])
+def get_all_hw():
    req = json.loads(request.data)
    payload = req['data']
    user_id = payload['user']
+
    HWSets_collection = c.Checkout.HWSets
    user_collection = c.Checkout.Users
+
    matched = user_collection.find_one({'_id': ObjectId(user_id)})
    page_sanitized = json.loads(json_util.dumps(matched))
    projects = page_sanitized['projects']
+
    response = []
+
    for p in projects:
-      
-      HWSets = HWSets_collection.find({ 'projects': p })
-      project_and_hwsets = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
-      response.append(project_and_hwsets)
+      HWSets = HWSets_collection.find({'projects': p })
+
+      proj_hw = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
+      response.append(proj_hw)
+
    return jsonify(response)
 
 #TODO: Rewrite for DB updates
