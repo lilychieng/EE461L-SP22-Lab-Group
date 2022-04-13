@@ -48,10 +48,15 @@ export default function Inventory() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/projects/user/?user_id=" + user)
+      .post("http://localhost:5000/user/checked_out_hw/", {
+        data: {
+          user: user,
+        },
+      })
       .then(function (response) {
         console.log(response);
         setProjects(response.data);
+        setIsLoading(false);
         setIsLoading(false);
       })
       .catch(function (error) {
@@ -75,7 +80,7 @@ export default function Inventory() {
 
               {projects.map((project, i) => (
                 <>
-                  <h1>Project: {project}</h1>
+                  <h1>Project: {project.project_id}</h1>
                   <div
                     className="card"
                     style={{
@@ -86,13 +91,13 @@ export default function Inventory() {
                       paddingBottom: "100px",
                     }}
                   >
-                    {itemsToDisplay.map((item, i) => (
+                    {project.HWSets.map((item, i) => (
                       <li style={{ listStyleType: "none" }} key={i}>
-                        {<ItemCard item={item} />}
+                        {<ItemCard item={item} proj_id={project.project_id}/>}
                       </li>
                     ))}
                     <li style={{ listStyleType: "none" }}>
-                      <NewItem />
+                      <NewItem project_id={project.project_id}/>
                     </li>
                   </div>
                 </>

@@ -252,14 +252,14 @@ def signup():
 
    collection = c.Checkout.Users
    matched = collection.find_one({'user': username})
-   print(user.to_database(), flush=True)
+   print(user.toDatabase(), flush=True)
    if matched != None:
       return 'user already exists', 400
 
    #TODO: 300 code for existing user, do user validation later
    
    try:
-      t_id = c.Checkout.Users.insert_one(user.to_database()).inserted_id
+      t_id = c.Checkout.Users.insert_one(user.toDatabase()).inserted_id
    except Exception as e:
       print(e, flush=True)
       return "failed to register user", 500
@@ -305,7 +305,7 @@ if __name__ == '__main__':
 
    #Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
-   checked_out_hwSets()
+   #checked_out_hwSets()
    
    #Establish Flask instance
-   #app.run(debug=True)
+   app.run(debug=True)

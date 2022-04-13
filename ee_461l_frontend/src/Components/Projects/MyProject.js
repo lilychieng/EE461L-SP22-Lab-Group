@@ -33,7 +33,13 @@ function MyProject({ setContent }) {
       .get("http://localhost:5000/projects/user/?user_id=" + user)
       .then(function (response) {
         console.log(response);
-        setProjects(response.data);
+        const projects = [];
+        response.data.forEach(e => {
+          if(e.Contributors.includes(user)){
+            projects.push(e.ID);
+          }
+        });
+        setProjects(projects);
         setIsLoading(false);
       })
       .catch(function (error) {

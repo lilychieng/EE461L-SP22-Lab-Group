@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -14,15 +14,34 @@ const itemsNotInProject = [
   { name: "Tests", avail: 239 },
 ];
 
-function NewItem() {
+const axios = require("axios").default;
+
+function NewItem({ project_id }) {
   const regexNumber = /^[0-9\b]+$/;
   const checkoutNum = useRef(0);
+  const [itemsNotInProject, setItemsNotInProject] = useState([]);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [item, setItem] = useState("");
   const handleItemChange = (e) => {
     setItem(e.target.value);
   };
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:5000/user/not_checked_out_hwSets/", {
+        data: {
+          project_id: project_id,
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+        setItemsNotInProject(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   const handleCheckOut = () => {
     setError(false);
