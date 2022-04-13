@@ -10,7 +10,6 @@ class Project:
         self.__description = description
         self.__demo = demo
 
-        self.__hwsets = []
         #Only hold contributor usernames
         self.__contributors = []
         #References to receipt objects
@@ -83,17 +82,6 @@ class Project:
         '''
         #Returns references of receipts related to the project
         return self.__receipts
-
-    def addHWSet(self, HWSet_id):
-        for ids in self.__hwsets:
-            if (ids == HWSet_id):
-                return
-        self.__hwsets.extend(HWSet_id)
-
-    def removeHWSet(self, HWSet_id):
-        for ids in self.__hwsets:
-            if (ids == HWSet_id):
-                self.__hwsets.remove(HWSet_id)
 
     #send to mongodb
     def toDatabase(self):

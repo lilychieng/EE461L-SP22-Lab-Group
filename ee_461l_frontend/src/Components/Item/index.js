@@ -9,7 +9,7 @@ import "../../css/App.css";
 import CheckoutModal from "../Modals/CheckoutModal";
 import ReturnModal from "../Modals/ReturnModal";
 
-function ItemCard({ item }) {
+function ItemCard({ item, proj_id }) {
   const [open, setOpen] = useState(false);
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -35,7 +35,11 @@ function ItemCard({ item }) {
             {item.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {item.class}: {item.avail}/{item.capacity} Available
+            {item.availability} / {item.capacity} Available
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {console.log(item.projects.find(project => project.project_id === proj_id ).checked_out)}
+            {item.projects.find(project => project.project_id === proj_id ).checked_out} Checked Out
           </Typography>
         </CardContent>
         <Button size="small" onClick={handleOpen}>

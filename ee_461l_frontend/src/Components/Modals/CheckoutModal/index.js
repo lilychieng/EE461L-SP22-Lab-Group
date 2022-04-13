@@ -39,10 +39,10 @@ function CheckoutModal({ item, setOpen, open }) {
     } else if (parseInt(checkout.current) === 0) {
       setError(true);
       return setErrorMessage("Checkout value cannot be 0");
-    } else if (parseInt(checkout.current) > item.avail) {
+    } else if (parseInt(checkout.current) > item.availability) {
       setError(true);
       return setErrorMessage(
-        `You cannot checkout more than ${item.avail} items`
+        `You cannot checkout more than ${item.availability} items`
       );
     }
     // axios api request
@@ -69,7 +69,7 @@ function CheckoutModal({ item, setOpen, open }) {
             <Alert>Sucessfully checked out {checkout.current} items</Alert>
           )}
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            There are {item.avail} {item.name} available.
+            There are {item.availability} {item.name} available.
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Enter number {item.name} to checkout

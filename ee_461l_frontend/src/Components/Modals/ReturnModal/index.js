@@ -71,7 +71,7 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen }) {
             <Alert>Sucessfully returned {checkout.current} items</Alert>
           )}
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            There are {item.avail} {item.name} left.
+            There are {item.availability} {item.name} left.
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Enter number {item.name} to return

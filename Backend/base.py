@@ -255,9 +255,7 @@ def create_project():
 
 '''
 Route: signup
-
 Creates new user and registers them within the `Users` database
-
 Returns:
 400 - Server received malformed username or password formatting
 500 - Internal server failed to register within the `Users` database
@@ -276,14 +274,14 @@ def signup():
 
    collection = c.Checkout.Users
    matched = collection.find_one({'user': username})
-   print(user.to_database(), flush=True)
+   print(user.toDatabase(), flush=True)
    if matched != None:
       return 'user already exists', 400
 
    #TODO: 300 code for existing user, do user validation later
    
    try:
-      t_id = c.Checkout.Users.insert_one(user.to_database()).inserted_id
+      t_id = c.Checkout.Users.insert_one(user.toDatabase()).inserted_id
    except Exception as e:
       print(e, flush=True)
       return "failed to register user", 500
@@ -292,10 +290,8 @@ def signup():
 
 '''
 Route: login
-
 Searches for first match of provided email (unique identifier) in the database, then
 verifies password hashes match with database entry.
-
 Returns:
 404 - User email in credentials do not match any existing entry
 401 - User password in credentials does not match an existing entry
@@ -331,6 +327,10 @@ if __name__ == '__main__':
 
    #Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
+<<<<<<< HEAD
+=======
+   #checked_out_hwSets()
+>>>>>>> a873c2e78b1d9a5f667be889b2e24ac90b56e6d6
    
    #Establish Flask instance
    app.run(debug=True)
