@@ -26,6 +26,71 @@ hardware_sets = []
 def index():
    return app.send_static_file('index.html')
 
+# Get all HWSets that a project doesn't have checked out
+@app.route('/user/not_checked_out_hwSets/', methods=["POST"])
+def not_checked_out_hwSets():
+   req = json.loads(request.data)
+   payload = req['data']
+   project_id = payload['project_id']
+   collection = c.Checkout.Hardware
+   HWSets = collection.find({ 'projects': {'$nin' : [project_id]}})
+   response = []
+   for document in HWSets:
+      page_sanitized = json.loads(json_util.dumps(document))
+      response.append(page_sanitized)
+   return jsonify(response)
+
+'''
+Returns: 
+Hardware checked out for all projects a user has registered
+themselves as a member of
+'''
+@app.route('/user/checked_out_hw/', methods=["POST"])
+def checked_out_hw():
+   req = json.loads(request.data)
+   payload = req['data']
+   user_id = payload['user']
+
+   hw_collection = c.Checkout.Hardware
+   user_collection = c.Checkout.Users
+   #Find all projects a user is registered to
+   matched = user_collection.find_one({'_id': ObjectId(user_id)})
+   page_sanitized = json.loads(json_util.dumps(matched))
+   
+   projects = page_sanitized['projects']
+
+   response = []
+   for p in projects:
+      #Comprehension of all hardware sets with hardware loaned to project `p`
+      HWSets = [set for set in c.Checkout.Hardware.find({'projects': {'$elemMatch': {'project_id': p}}})]
+
+      project_hw = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
+      response.append(project_hw)
+   
+   if response is None:
+      return "No data found"
+   else:
+      return jsonify(response)
+
+@app.route('/user/project/HWSets/', methods=["POST"])
+def get_all_HWSets():
+   req = json.loads(request.data)
+   payload = req['data']
+   user_id = payload['user']
+   HWSets_collection = c.Checkout.HWSets
+   user_collection = c.Checkout.Users
+   matched = user_collection.find_one({'_id': ObjectId(user_id)})
+   page_sanitized = json.loads(json_util.dumps(matched))
+   projects = page_sanitized['projects']
+   response = []
+   for p in projects:
+      
+      HWSets = HWSets_collection.find({ 'projects': p })
+      project_and_hwsets = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
+      response.append(project_and_hwsets)
+   return jsonify(response)
+
+#TODO: Rewrite for DB updates
 @app.route('/projects/checkin/', methods=["POST"])
 def checkin():  
    req = json.loads(request.data)
@@ -38,19 +103,24 @@ def checkin():
 
    collection = c.Checkout.HWSets
    matched = collection.find_one({'_id': ObjectId(HWSet_id)})
+
    # Check if checkin_qty exceeds the amount checked out
    if (matched.getCheckedoutQty() < checkin_qty):
       return "checkin_qty is larger than the amount checked out"
+
    matched.check_in(checkin_qty)
    collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
+
    # Check if all hardwareSets have been returned, and if so, then remove the id from project
    if (matched.getCheckedoutQty() == 0):
       collection = c.Checkout.Projects
       project = collection.find_one({'project_id': project_id})
       project.removeHWSet(HWSet_id)
       collection.update_one({'project_id': project_id}, project)
-   return "Successful Checkin"
 
+   return "Successful checkin"
+
+#TODO: Rewrite for DB updates
 @app.route('/projects/checkout/', methods=["POST"])
 def checkout():
    req = json.loads(request.data)
@@ -104,6 +174,7 @@ def join_users_projects():
       contribs = matched['Contributors']
       contribs.append(user_id)
       collection.update_one({'ID': project_id}, {'$set': {'Contributors': contribs}})
+
    except Exception as e:
       print(e)
       return "There was an error with your request"
@@ -229,7 +300,6 @@ def login():
    else:
       return 'user credentials do not match'
 
-
 if __name__ == '__main__':
    #Parse config file and decrypt password using stored key
    config.read("db_config.ini")
@@ -239,7 +309,7 @@ if __name__ == '__main__':
 
    #Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
-
+   checked_out_hwSets()
+   
    #Establish Flask instance
-   app.run(debug=True)
-   get_users_projects()
+   #app.run(debug=True)
