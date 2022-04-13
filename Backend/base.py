@@ -8,6 +8,7 @@ from hashlib import sha256
 from flask_cors import CORS, cross_origin
 from Users import Users
 from projects import Project
+from hardwareSet import HardwareSet
 import certifi
 
 app = Flask(__name__)
@@ -19,6 +20,46 @@ c = ""
 @app.route('/')
 def index():
    return app.send_static_file('index.html')
+
+# Get all HWSets that a project doesn't have checked out
+@app.route('/user/not_checked_out_hwSets/', methods=["POST"])
+def not_checked_out_hwSets():
+   req = json.loads(request.data)
+   payload = req['data']
+   project_id = payload['project_id']
+   collection = c.Checkout.Hardware
+   HWSets = collection.find({ 'projects': {'$nin' : [project_id]}})
+
+   response = []
+   for document in HWSets:
+      page_sanitized = json.loads(json_util.dumps(document))
+      response.append(page_sanitized)
+
+   return jsonify(response)
+   
+
+@app.route('/user/project/HWSets/', methods=["POST"])
+def get_all_HWSets():
+   req = json.loads(request.data)
+   payload = req['data']
+   user_id = payload['user']
+
+   HWSets_collection = c.Checkout.HWSets
+   user_collection = c.Checkout.Users
+   matched = user_collection.find_one({'_id': ObjectId(user_id)})
+   page_sanitized = json.loads(json_util.dumps(matched))
+
+   projects = page_sanitized['projects']
+   response = []
+
+   for p in projects:
+      
+      HWSets = HWSets_collection.find({ 'projects': p })
+      project_and_hwsets = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
+      response.append(project_and_hwsets)
+
+   return jsonify(response)
+   
 
 @app.route('/checkin/', methods=["POST"])
 def checkin():  
@@ -48,19 +89,19 @@ def checkout():
    user = payload['user']
    checkout_qty = payload['checkout_qty']
 
-   collection = c.Checkout.HWSets
+   collection = c.Checkout.Hardware
    matched = collection.find_one({'_id': ObjectId(HWSet_id)})
 
-   if (matched.get_availability() < checkout_qty):
+   if (int(matched['availability']) < int(checkout_qty)):
       return "checkout_qty is larger than availability"
 
-   matched.check_out(checkout_qty)
-   collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
-
-   collection = c.Checkout.Projects
-   project = collection.find_one({'project_id': project_id})
-   # Check if HWSet_id is stored in project
-   # If not, then add the id to project
+   collection.update_one({'_id': ObjectId(HWSet_id)}, {'$set': {'availability': int(matched['availability']) - int(checkout_qty)}})
+   
+   if(matched['projects'].has_key(project_id)):
+      print('here')
+      collection.update_one({'_id': ObjectId(HWSet_id)})
+   else:
+      collection.update_one({'_id': ObjectId(HWSet_id)}, {'$push': {"projects": {'id': project_id, 'checkedOut': int(checkout_qty)}}})
    return "Successful Checkout"
 
 @app.route('/projects/join/', methods=["POST"])
