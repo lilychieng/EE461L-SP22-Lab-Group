@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for, request, jsonify, abort, Response
+from matplotlib.style import available
 from bson import json_util, ObjectId
 import json
 from pymongo import MongoClient
@@ -128,25 +129,36 @@ def checkout():
 
    project_id = payload['project_id']
    HWSet_id = payload['HWSet_id']
-   user = payload['user']
+   user_id = payload['user']
    checkout_qty = payload['checkout_qty']
 
-   collection = c.Checkout.HWSets
-   matched = collection.find_one({'_id': ObjectId(HWSet_id)})
+   hwset_collection = c.Checkout.Hardware
+   user_collection = c.Checkout.Users
+   matched = user_collection.find_one({'_id': ObjectId(user_id)}) # getting a user given user_id
+   if matched == None:
+      return 'Unsuccessful Checkout - user does not exist'
 
-   if (matched.get_availability() < checkout_qty):
-      return "checkout_qty is larger than availability"
+   hwset = hwset_collection.find_one({'_id': ObjectId(HWSet_id)})
 
-   matched.check_out(checkout_qty)
-   collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
+   if checkout_qty > hwset['availability']:
+      return 'Unsuccessful Checkout - checkout quantity exceeds HW set availability'
+   
+   # modify hwset's availability   
+   new_avail = hwset['availability'] - checkout_qty
 
-   collection = c.Checkout.Projects
-   project = collection.find_one({'project_id': project_id})
-   # Check if HWSet_id is stored in project
-   # If not, then add the id to project
-   project.addHWSet(HWSet_id)
-   collection.update_one({'project_id': project_id}, project)
-   #receipt = CheckoutReceipt(HWSet_id, user.getUsername(), checkout_qty)
+   # increment number used in hwset's project arr's proj_id
+   proj_dict = hwset['projects']
+   incremented = False
+   for proj in proj_dict:
+      if proj['project_id'] == project_id:
+         incremented = True
+         proj['checked_out'] += checkout_qty
+   
+   if not incremented:
+      # add id to proj_dict w initial checkout_qty
+      proj_dict.append({"project_id" : project_id, "checked_out" : checkout_qty})
+
+   hwset_collection.update_one({'_id': ObjectId(HWSet_id)}, {"$set" : {"projects" : proj_dict, "availability" : new_avail}})
 
    return "Successful Checkout"
 
@@ -305,7 +317,6 @@ if __name__ == '__main__':
 
    #Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
-   #checked_out_hwSets()
    
    #Establish Flask instance
    app.run(debug=True)
