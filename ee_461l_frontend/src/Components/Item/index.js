@@ -37,8 +37,8 @@ function ItemCard({ item, proj_id, reload, setReload }) {
         <CardMedia
           component="img"
           height="140"
-          image="https://i.imgur.com/cn2Vlek.jpeg" //TODO: get this from backend later
-          alt="green iguana"
+          image= {"../../../../public/images/" + item} //TODO: get this from backend later
+          alt={"" + item}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -47,7 +47,7 @@ function ItemCard({ item, proj_id, reload, setReload }) {
           <Typography variant="body2" color="text.secondary">
             {item.availability} / {item.capacity} Available
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="red">
             {
               item.projects.find((project) => project.project_id === proj_id)
                 .checked_out

@@ -29,7 +29,7 @@ function CheckoutModal({ item, setOpen, open, proj_id, reload, setReload }) {
   const handleClose = () => {
     checkout.current = 0;
     setError(false);
-    setSuccess(false)
+    setSuccess(false);
     setOpen(false);
   };
 
@@ -51,20 +51,23 @@ function CheckoutModal({ item, setOpen, open, proj_id, reload, setReload }) {
     // axios api request
     else {
       axios
-      .post("http://localhost:5000/projects/checkout/", {
-        data: {
-          project_id : proj_id,
-          HWSet_id: item._id.$oid,
-          checkout_qty: Number.parseInt(checkout.current),
-        },
-      })
-      .then(function (response) {
-        setSuccess(true);
-        setReload(reload + 1);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .post("http://localhost:5000/projects/checkout/", {
+          data: {
+            project_id: proj_id,
+            HWSet_id: item._id.$oid,
+            checkout_qty: Number.parseInt(checkout.current),
+          },
+        })
+        .then(function (response) {
+          setSuccess(true);
+          setReload(reload + 1);
+          setTimeout(function () {
+            handleClose();
+          }, 750);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
   return (
@@ -74,23 +77,47 @@ function CheckoutModal({ item, setOpen, open, proj_id, reload, setReload }) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{ textAlign: "center" }}
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Button
+            small
+            style={{
+              position: "absolute",
+              right: "0",
+              top: "0",
+              color: "black",
+            }}
+            onClick={handleClose}
+          >
+            X
+          </Button>
+          <Typography
+            id="modal-modal-description"
+            style={{ fontSize: "30px", fontWeight: "700" }}
+          >
             Checkout for {item.name}
           </Typography>
           {error && <Alert severity="error">{errorMessage}</Alert>}
           {success && (
             <Alert>Sucessfully checked out {checkout.current} items</Alert>
           )}
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            There are {item.availability} {item.name} available.
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            style={{ fontSize: "25px" }}
+          >
+            Available {item.name}: {item.availability}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            style={{ fontSize: "15px" }}
+          >
             Enter number {item.name} to checkout
           </Typography>
           <TextField
-            label="# of items"
+            label="Number of items"
             fullWidth
             onChange={(e) => {
               checkout.current = e.target.value;
