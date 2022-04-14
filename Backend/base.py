@@ -70,7 +70,7 @@ def checked_out_hw():
    hw_collection = c.Checkout.Hardware
    user_collection = c.Checkout.Users
    # Find all projects a user is registered to
-   matched = user_collection.find_one({'_id': ObjectId('625068ca4453786c33e5ec70')})
+   matched = user_collection.find_one({'_id': ObjectId(user_id)})
    page_sanitized = json.loads(json_util.dumps(matched))
    projects = page_sanitized['projects']
 
@@ -135,7 +135,7 @@ def checkin():
          else:
             # Return updated so front-end can be updated immediately upon completion
             updated_hw_set = hwset_collection.find_one({'_id': ObjectId(HWSet_id)})
-            return jsonify(updated_hw_set)
+            return jsonify(json.loads(json_util.dumps(updated_hw_set)))
 
    return "Invalid project ID"
 
@@ -187,7 +187,7 @@ def checkout():
    else:
       # Return updated so front-end can be updated immediately upon completion
       updated_hw_set = hwset_collection.find_one({'_id': ObjectId(HWSet_id)})
-      return jsonify(updated_hw_set)
+      return jsonify(json.loads(json_util.dumps(updated_hw_set)))
 
 '''
 Parameters:
@@ -379,7 +379,7 @@ if __name__ == '__main__':
 
    # Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
-   print(checkout())
+   # print(checkout())
 
    # Establish Flask instance
    app.run(debug=True)

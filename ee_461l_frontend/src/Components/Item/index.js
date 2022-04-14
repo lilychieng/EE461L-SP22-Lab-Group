@@ -9,7 +9,7 @@ import "../../css/App.css";
 import CheckoutModal from "../Modals/CheckoutModal";
 import ReturnModal from "../Modals/ReturnModal";
 
-function ItemCard({ item, proj_id }) {
+function ItemCard({ item, proj_id, reload, setReload }) {
   const [open, setOpen] = useState(false);
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -20,8 +20,11 @@ function ItemCard({ item, proj_id }) {
       <CheckoutModal item={item} setOpen={setOpen} open={open} />
       <ReturnModal
         item={item}
+        proj_id={proj_id}
         setReturnModalOpen={setReturnModalOpen}
         returnModalOpen={returnModalOpen}
+        reload={reload}
+        setReload={setReload}
       />
       <Card>
         <CardMedia

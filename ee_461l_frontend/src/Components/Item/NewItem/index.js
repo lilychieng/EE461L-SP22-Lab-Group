@@ -29,7 +29,7 @@ function NewItem({ project_id }) {
 
   useEffect(() => {
     axios
-      .post("http://localhost:5000/user/not_checked_out_hwSets/", {
+      .post("http://localhost:5000/user/not_checked_out_hw/", {
         data: {
           project_id: project_id,
         },

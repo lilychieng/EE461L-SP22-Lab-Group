@@ -28,6 +28,7 @@ export default function Inventory() {
   const user = useUser();
   const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState(null);
+  const [reload, setReload] = useState(0);
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
   const [items, setItems] = useState([]);
 
@@ -45,6 +46,7 @@ export default function Inventory() {
   useEffect(() => {
     setItems(data);
     setItemsToDisplay(data);
+    setReload(reload+1);
   }, []);
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export default function Inventory() {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [reload]);
 
   return (
     <>
@@ -97,7 +99,7 @@ export default function Inventory() {
                   >
                     {project.HWSets.map((item, i) => (
                       <li style={{ listStyleType: "none" }} key={i}>
-                        {<ItemCard item={item} proj_id={project.project_id} />}
+                        {<ItemCard item={item} proj_id={project.project_id} reload={reload} setReload={setReload} />}
                       </li>
                     ))}
                     <li style={{ listStyleType: "none" }}>

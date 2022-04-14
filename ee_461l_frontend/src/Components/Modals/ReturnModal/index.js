@@ -6,7 +6,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 
-function ReturnModal({ item, setReturnModalOpen, returnModalOpen }) {
+const axios = require("axios").default;
+
+function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reload, setReload }) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -19,7 +21,7 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen }) {
     p: 4,
   };
   // Remove once we get the number of HWSets the project has
-  const numOfProjectItems = 40;
+  const numOfProjectItems = item.availability;
 
   const regexNumber = /^[0-9\b]+$/;
   const checkout = useRef(0);
@@ -33,6 +35,7 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen }) {
   };
 
   const handleReturn = (e) => {
+    console.log(item._id.$oid);
     setError(false);
     setSuccess(false);
     if (!regexNumber.test(checkout.current)) {
@@ -41,15 +44,30 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen }) {
     } else if (parseInt(checkout.current) === 0) {
       setError(true);
       return setErrorMessage("Checkout value cannot be 0");
-    } else if (parseInt(checkout.current) > numOfProjectItems) {
+    } else if (parseInt(checkout.current) > item.projects.find(x => x.project_id === proj_id).checked_out) {
       setError(true);
       return setErrorMessage(
-        `You cannot return more than ${numOfProjectItems} items`
+        `You cannot return more than ${item.projects.find(x => x.project_id === proj_id).checked_out} items`
       );
     }
     // axios api request
     else {
-      setSuccess(true);
+      axios
+      .post("http://localhost:5000/projects/checkin/", {
+        data: {
+          project_id : proj_id,
+          HWSet_id: item._id.$oid,
+          checkin_qty: Number.parseInt(checkout.current),
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+        setSuccess(true);
+        setReload(reload + 1);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
 
     console.log(checkout.current);
