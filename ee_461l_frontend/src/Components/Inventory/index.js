@@ -6,6 +6,7 @@ import ItemCard from "../Item";
 import NewItem from "../Item/NewItem";
 import { CircularProgress } from "@mui/material";
 import { useUser } from "../../hooks/UserContext";
+import { CSVLink, CSVDownload } from "react-csv";
 
 /*
  * data is a temp variable to mock the HWSets recieved from the Backend
@@ -67,6 +68,9 @@ export default function Inventory() {
   return (
     <>
       <h2>My Dashboard</h2>
+      <div>
+        <CSVLink data={data}>Download Metadata</CSVLink>
+      </div>
       {!isLoading ? (
         <>
           {projects.length > 0 ? (
@@ -93,11 +97,11 @@ export default function Inventory() {
                   >
                     {project.HWSets.map((item, i) => (
                       <li style={{ listStyleType: "none" }} key={i}>
-                        {<ItemCard item={item} proj_id={project.project_id}/>}
+                        {<ItemCard item={item} proj_id={project.project_id} />}
                       </li>
                     ))}
                     <li style={{ listStyleType: "none" }}>
-                      <NewItem project_id={project.project_id}/>
+                      <NewItem project_id={project.project_id} />
                     </li>
                   </div>
                 </>
@@ -106,9 +110,7 @@ export default function Inventory() {
           ) : (
             <>
               <Typography>You are not part of any projects!</Typography>
-              <Button onClick={() => nav("/project")}>
-                Go To Projects
-              </Button>
+              <Button onClick={() => nav("/project")}>Go To Projects</Button>
             </>
           )}
         </>
