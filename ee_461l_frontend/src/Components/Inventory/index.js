@@ -46,7 +46,7 @@ export default function Inventory() {
   useEffect(() => {
     setItems(data);
     setItemsToDisplay(data);
-    setReload(reload+1);
+    setReload(reload + 1);
   }, []);
 
   useEffect(() => {
@@ -77,12 +77,12 @@ export default function Inventory() {
         <>
           {projects.length > 0 ? (
             <>
-              <TextField
+              {/* <TextField
                 label="Search"
                 fullWidth
                 onChange={handleSearch}
                 style={{ marginBottom: "20px" }}
-              />
+              /> */}
 
               {projects.map((project, i) => (
                 <>
@@ -99,11 +99,22 @@ export default function Inventory() {
                   >
                     {project.HWSets.map((item, i) => (
                       <li style={{ listStyleType: "none" }} key={i}>
-                        {<ItemCard item={item} proj_id={project.project_id} reload={reload} setReload={setReload} />}
+                        {
+                          <ItemCard
+                            item={item}
+                            proj_id={project.project_id}
+                            reload={reload}
+                            setReload={setReload}
+                          />
+                        }
                       </li>
                     ))}
                     <li style={{ listStyleType: "none" }}>
-                      <NewItem proj_id={project.project_id} reload={reload} setReload={setReload}/>
+                      <NewItem
+                        proj_id={project.project_id}
+                        reload={reload}
+                        setReload={setReload}
+                      />
                     </li>
                   </div>
                 </>

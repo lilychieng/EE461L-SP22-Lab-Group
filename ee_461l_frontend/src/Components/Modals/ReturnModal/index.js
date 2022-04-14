@@ -8,7 +8,14 @@ import Modal from "@mui/material/Modal";
 
 const axios = require("axios").default;
 
-function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reload, setReload }) {
+function ReturnModal({
+  item,
+  setReturnModalOpen,
+  returnModalOpen,
+  proj_id,
+  reload,
+  setReload,
+}) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -44,29 +51,37 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reloa
     } else if (parseInt(checkout.current) === 0) {
       setError(true);
       return setErrorMessage("Checkout value cannot be 0");
-    } else if (parseInt(checkout.current) > item.projects.find(x => x.project_id === proj_id).checked_out) {
+    } else if (
+      parseInt(checkout.current) >
+      item.projects.find((x) => x.project_id === proj_id).checked_out
+    ) {
       setError(true);
       return setErrorMessage(
-        `You cannot return more than ${item.projects.find(x => x.project_id === proj_id).checked_out} items`
+        `You cannot return more than ${
+          item.projects.find((x) => x.project_id === proj_id).checked_out
+        } items`
       );
     }
     // axios api request
     else {
       axios
-      .post("http://localhost:5000/projects/checkin/", {
-        data: {
-          project_id : proj_id,
-          HWSet_id: item._id.$oid,
-          checkin_qty: Number.parseInt(checkout.current),
-        },
-      })
-      .then(function (response) {
-        setSuccess(true);
-        setReload(reload + 1);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .post("http://localhost:5000/projects/checkin/", {
+          data: {
+            project_id: proj_id,
+            HWSet_id: item._id.$oid,
+            checkin_qty: Number.parseInt(checkout.current),
+          },
+        })
+        .then(function (response) {
+          setSuccess(true);
+          setReload(reload + 1);
+          setTimeout(function () {
+            handleClose();
+          }, 750);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
   return (
@@ -76,9 +91,26 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reloa
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{ textAlign: "center" }}
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Button
+            small
+            style={{
+              position: "absolute",
+              right: "0",
+              top: "0",
+              color: "black",
+            }}
+            onClick={handleClose}
+          >
+            X
+          </Button>
+
+          <Typography
+            id="modal-modal-description"
+            style={{ fontSize: "30px", fontWeight: "700" }}
+          >
             Return for {item.name}
           </Typography>
           {error && <Alert severity="error">{errorMessage}</Alert>}
@@ -86,13 +118,17 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reloa
             <Alert>Sucessfully returned {checkout.current} items</Alert>
           )}
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            There are {item.availability} {item.name} left.
+            Remaining {item.name}: {item.availability}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            style={{ fontSize: "15px" }}
+          >
             Enter number {item.name} to return
           </Typography>
           <TextField
-            label="# of items"
+            label="Number of items"
             fullWidth
             onChange={(e) => {
               checkout.current = e.target.value;
