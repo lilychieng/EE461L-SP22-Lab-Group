@@ -382,4 +382,4 @@ if __name__ == '__main__':
    print(checkout())
 
    # Establish Flask instance
-   #app.run(debug=True)
+   app.run(debug=True)
