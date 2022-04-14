@@ -7,6 +7,7 @@ from configparser import ConfigParser
 from hashlib import sha256
 from flask_cors import CORS, cross_origin
 import certifi
+import requests
 
 from Users import Users
 from projects import Project
@@ -28,6 +29,15 @@ Static page corresponding to homepage of built frontend
 @app.route('/')
 def index():
    return app.send_static_file('index.html')
+
+#Send weather data and forecast data
+@app.route('/weather/', methods=["POST"])
+def weather():
+   r = requests.get('https://api.openweathermap.org/data/2.5/weather?lat=30.288148&lon=-97.735572&appid=f87ad405e7fa8fbb61ca21016ebcdd3d')
+   weatherData = r.json()
+   rcast = requests.get('https://api.openweathermap.org/data/2.5/forecast?lat=30.288148&lon=-97.735572&appid=f87ad405e7fa8fbb61ca21016ebcdd3d')
+   forecastData = rcast.json()
+   return jsonify(weatherData), jsonify(forecastData)
 
 '''
 Parameters:
