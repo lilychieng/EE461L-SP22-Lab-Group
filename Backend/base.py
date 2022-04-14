@@ -1,5 +1,4 @@
 from flask import Flask, redirect, url_for, request, jsonify, abort, Response
-from matplotlib.style import available
 from bson import json_util, ObjectId
 import json
 from pymongo import MongoClient
@@ -17,9 +16,9 @@ from hardwareSet import HardwareSet
 app = Flask(__name__)
 CORS(app, supports_credegntials=True)
 config = ConfigParser()
-#Reference to MongoClient
+# Reference to MongoClient
 c = ""
-#Available HWSets users can check out from
+# Available HWSets users can check out from
 hardware_sets = []
 
 '''
@@ -32,7 +31,7 @@ def index():
 
 '''
 Parameters:
-`project_id`: Integer ID corresponding to project
+`project_id`: ID corresponding to project to search for hardware sets with no items checked out to `project_id`
 
 Returns:
 An array of all hardware sets that a project has yet to check out hardware for
@@ -43,7 +42,7 @@ def not_checked_out_hw():
    payload = req['data']
    project_id = payload['project_id']
 
-   #Comprehension of all hardware sets that do not contain a receipt of checked out hw under `project_id`
+   # Comprehension of all hardware sets that do not contain a receipt of checked out hw under `project_id`
    hw = [set for set in c.Checkout.Hardware.find({'projects': {'$not': {'$elemMatch': {'project_id': project_id}}}})]
 
    response = []
@@ -56,11 +55,11 @@ def not_checked_out_hw():
 
 '''
 Parameters:
-`user`: Hash string corresponding to ObjectId of user to request project hardware for
+`user`: ID of user to search for hardware associated with their registered proejcts
 
 Returns: 
-Hardware checked out for all projects a user has registered
-themselves as a member of  
+Hardware checked out for all projects a user 
+has registered themselves as a member of
 '''
 @app.route('/user/checked_out_hw/', methods=["POST"])
 def checked_out_hw():
@@ -70,7 +69,7 @@ def checked_out_hw():
 
    hw_collection = c.Checkout.Hardware
    user_collection = c.Checkout.Users
-   #Find all projects a user is registered to
+   # Find all projects a user is registered to
    matched = user_collection.find_one({'_id': ObjectId('625068ca4453786c33e5ec70')})
    page_sanitized = json.loads(json_util.dumps(matched))
    projects = page_sanitized['projects']
@@ -78,7 +77,7 @@ def checked_out_hw():
    response = []
 
    for p in projects:
-      #Comprehension of all hardware sets with hardware loaned to project `p`
+      # Comprehension of all hardware sets with hardware loaned to project `p`
       HWSets = [set for set in hw_collection.find({'projects': {'$elemMatch': {'project_id': p}}})]
    
       project_hw = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
@@ -112,6 +111,7 @@ def checkin():
 
    # Check if all hardwareSets have been returned, and if so, then remove the id from project
    if (matched.getCheckedoutQty() == 0):
+
       collection = c.Checkout.Projects
       project = collection.find_one({'project_id': project_id})
       project.removeHWSet(HWSet_id)
@@ -119,9 +119,19 @@ def checkin():
 
    return "Successful checkin"
 
-#TODO: Rewrite for DB updates
+'''
+Parameters:
+`user`: ObjectID of user checkout action. Should be a member of project with ID `project_id` that hardware is being checked out under
+`project_id`: ID of project with which to register the hardware
+`HWSet_id`: ObjectId of hardware set to check out items from
+`checkout_qty`: Number of items to check out from hardware set associated with `HWSet_id`
+
+Returns:
+On success, updated hardware set data to display updated checkout data to the user
+'''
 @app.route('/projects/checkout/', methods=["POST"])
 def checkout():
+   # Parse JSON payload
    req = json.loads(request.data)
    payload = req['data']
 
@@ -130,8 +140,10 @@ def checkout():
    user_id = payload['user']
    checkout_qty = payload['checkout_qty']
 
+   #
    hwset_collection = c.Checkout.Hardware
    user_collection = c.Checkout.Users
+
    matched = user_collection.find_one({'_id': ObjectId(user_id)}) # getting a user given user_id
    if matched == None:
       return 'Unsuccessful Checkout - user does not exist'
@@ -141,10 +153,10 @@ def checkout():
    if checkout_qty > hwset['availability']:
       return 'Unsuccessful Checkout - checkout quantity exceeds HW set availability'
    
-   # modify hwset's availability   
+   # Modify hwset's availability   
    new_avail = hwset['availability'] - checkout_qty
 
-   # increment number used in hwset's project arr's proj_id
+   # Increment number used in hwset's project arr's proj_id
    proj_dict = hwset['projects']
    incremented = False
    for proj in proj_dict:
@@ -153,32 +165,48 @@ def checkout():
          proj['checked_out'] += checkout_qty
    
    if not incremented:
-      # add id to proj_dict w initial checkout_qty
+      # Add id to proj_dict w initial checkout_qty
       proj_dict.append({"project_id" : project_id, "checked_out" : checkout_qty})
 
-   hwset_collection.update_one({'_id': ObjectId(HWSet_id)}, {"$set" : {"projects" : proj_dict, "availability" : new_avail}})
+   try:
+      hwset_collection.update_one({'_id': ObjectId(HWSet_id)}, {"$set" : {"projects" : proj_dict, "availability" : new_avail}})
+   except Exception as e:
+      return "Check out failed"
+   else:
+      # Return updated so front-end can be updated immediately upon completion
+      updated_hw_set = hwset_collection.find_one({'_id': ObjectId(HWSet_id)})
+      return jsonify(updated_hw_set)
 
-   return "Successful Checkout"
+'''
+Parameters:
+`user_id`: ObjectID of user to enroll in the project corresponding to `projectID`
+`projectID`: ID of created project to enroll a user in 
 
+Returns:
+Status message detailing success or failure of adding user to project
+'''
 @app.route('/projects/join/', methods=["POST"])
 def join_users_projects():
+
+   # Parse JSON payload
    user_id = request.args.get('user_id')
    req = json.loads(request.data)
    payload = req['data']
    project_id = payload['projectID']
 
    try:
-      # Update project to the User
       collection = c.Checkout.Users
       matched = collection.find_one({'_id': ObjectId(user_id)})
-      print(matched)
+
       projects = matched['projects']
-      if(project_id in projects):
+      if (project_id in projects):
          return "Already a member"
+
       projects.append(project_id)
+      # Add `project_id` to list of user-enrolled projects
       collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'projects': projects}})
 
-      # Update project by adding the User
+      # Update project by adding `user_id` to `contributors` in relevant project
       collection = c.Checkout.Projects
       matched = collection.find_one({'ID': project_id})
       contribs = matched['Contributors']
@@ -191,35 +219,60 @@ def join_users_projects():
    else:
       return "Sucessfully joined the group"
 
-# Returns all projects that a single user is a part of
+'''
+Parameters:
+`user_id`: ObjectId of user from which to obtain associated projects
+
+Returns:
+List of projects that a given user is a part of
+'''
 @app.route('/projects/user/')
 def get_users_projects():
+
    user_id = request.args.get('user_id')
    collection = c.Checkout.Users
    matched = collection.find_one({'_id': ObjectId('user_id')})
 
-   if(matched is None):
+   if (matched is None):
       return "User not found"
    
    page_sanitized = json.loads(json_util.dumps(matched))
-   #Query DB given user for all projects in the user's joined project list
+   # Query DB given user for all projects in the user's joined project list
    projects = [json.loads(json_util.dumps(c.Checkout.Projects.find_one({"ID": project_id}))) 
                for project_id in page_sanitized['projects']]
    
    return jsonify(projects)
 
-# Get all projects on the database
+'''
+Parameters:
+None
+
+Returns:
+List of all created projects
+'''
 @app.route('/projects/all/', methods=["GET"])
 def get_projects():
    projects = []
    collection = c.Checkout.Projects
    cursor = collection.find({})
+
    for document in cursor:
       print(document)
       page_sanitized = json.loads(json_util.dumps(document))
       projects.append(page_sanitized)
+
    return jsonify(projects)
 
+'''
+Parameters:
+`name`: Name of project to create
+'projectID': Unique four-digit identifier for the project to create
+`description`: Description of project to create
+`demo`: Optional parameter of video link of project to display
+
+Returns:
+Status message associated with success or failure of ability to create object
+'''
 @app.route('/projects/create/', methods=["POST"])
 def create_project():
    req = json.loads(request.data)
@@ -243,13 +296,13 @@ def create_project():
 '''
 Route: signup
 Creates new user and registers them within the `Users` database
+
 Returns:
 400 - Server received malformed username or password formatting
 500 - Internal server failed to register within the `Users` database
 200 - Succesful user registration in the database
 '''
 @app.route('/user/signup/', methods=["POST"])
-# @cross_origin(supports_credentials=True)
 def signup():
    req = json.loads(request.data)
    payload = req['data']
@@ -279,13 +332,13 @@ def signup():
 Route: login
 Searches for first match of provided email (unique identifier) in the database, then
 verifies password hashes match with database entry.
+
 Returns:
 404 - User email in credentials do not match any existing entry
 401 - User password in credentials does not match an existing entry
 200 - Successful user login
 '''
 @app.route('/user/login/', methods=["POST"])
-# @cross_origin(supports_credentials=True)
 def login():
    req = json.loads(request.data)
    print(req, flush=True)
@@ -306,14 +359,14 @@ def login():
       return 'user credentials do not match'
 
 if __name__ == '__main__':
-   #Parse config file and decrypt password using stored key
+   # Parse config file and decrypt password using stored key
    config.read("db_config.ini")
    key = Fernet(config.get("Credentials", "Key").encode('UTF-8'))
    password = key.decrypt(config.get("Credentials", "Password").encode('UTF-8')).decode('UTF-8')
    ca = certifi.where()
 
-   #Establish connection to cloud DB
+   # Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
    
-   #Establish Flask instance
+   # Establish Flask instance
    app.run(debug=True)
