@@ -238,12 +238,13 @@ Parameters:
 Returns:
 List of projects that a given user is a part of
 '''
-@app.route('/projects/user/')
+@app.route('/projects/user/', methods=["GET"])
 def get_users_projects():
 
    user_id = request.args.get('user_id')
+   print(f'{user_id} is UID', flush=True)
    collection = c.Checkout.Users
-   matched = collection.find_one({'_id': ObjectId('user_id')})
+   matched = collection.find_one({'_id': ObjectId(user_id)})
 
    if (matched is None):
       return "User not found"
@@ -302,7 +303,7 @@ def create_project():
       return "Project ID is taken"
       
    newProject = Project(name, id, description, demo)
-   collection.insert_one(newProject.to_db())
+   collection.insert_one(newProject.toDatabase())
    return "Project sucessfully added!"
 
 '''
