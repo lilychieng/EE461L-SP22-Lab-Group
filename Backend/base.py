@@ -41,14 +41,31 @@ Static page corresponding to homepage of built frontend
 def index():
    return app.send_static_file('index.html')
 
-#Send weather data and forecast data
-@app.route('/weather/', methods=["POST"])
-def weather():
-   r = requests.get('https://api.openweathermap.org/data/2.5/weather?lat=30.288148&lon=-97.735572&appid=f87ad405e7fa8fbb61ca21016ebcdd3d')
-   weatherData = r.json()
-   rcast = requests.get('https://api.openweathermap.org/data/2.5/forecast?lat=30.288148&lon=-97.735572&appid=f87ad405e7fa8fbb61ca21016ebcdd3d')
-   forecastData = rcast.json()
-   return jsonify(weatherData), jsonify(forecastData)
+'''
+Parameters:
+None
+
+Returns:
+JSON Data corresponding to the current weather and the weather forecast for the next several days
+'''
+@app.route('/datasets/weather/', methods=["GET"])
+def get_weather():
+   # Convert array of tuples of parameters to dictionary
+   params = {}
+   for key, val in config.items("Weather"):
+        params.setdefault(key, val)
+
+   # Payload to send to API endpoint
+   payload = f"lat={float(params['latitude'])}&lon={float(params['longitude'])}&appid={params['appid']}"
+
+   weather_data = requests.get(f"https://api.openweathermap.org/data/2.5/weather?{payload}")
+   forecast_data = requests.get(f"https://api.openweathermap.org/data/2.5/forecast?{payload}")
+
+   # Format top level dictionary of response
+   response = json.loads(json.dumps({'weather': weather_data.json(), 'forecast': forecast_data.json()}, 
+                                    indent=4, sort_keys=True))
+   
+   return jsonify(response)
 
 '''
 Parameters:
@@ -393,6 +410,6 @@ def login():
       return 'user credentials do not match'
 
 if __name__ == '__main__':
-
+   get_weather()
    # Establish Flask instance
-   app.run(debug=True)
+   #app.run(debug=True)
