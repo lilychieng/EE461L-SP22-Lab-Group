@@ -243,7 +243,7 @@ def get_users_projects():
 
    user_id = request.args.get('user_id')
    collection = c.Checkout.Users
-   matched = collection.find_one({'_id': ObjectId('user_id')})
+   matched = collection.find_one({'_id': ObjectId(user_id)})
 
    if (matched is None):
       return "User not found"

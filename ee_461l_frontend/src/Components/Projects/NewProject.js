@@ -52,7 +52,7 @@ function NewProject() {
         },
       })
       .then(function (response) {
-        console.log(response);
+        //console.log(response);
         if (response.data === "Project sucessfully added!") {
           setIsLoading(false);
           setSucess(true);

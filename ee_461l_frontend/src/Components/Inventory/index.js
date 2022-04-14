@@ -57,7 +57,7 @@ export default function Inventory() {
         },
       })
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         setProjects(response.data);
         setIsLoading(false);
         setIsLoading(false);
@@ -103,7 +103,7 @@ export default function Inventory() {
                       </li>
                     ))}
                     <li style={{ listStyleType: "none" }}>
-                      <NewItem project_id={project.project_id} />
+                      <NewItem proj_id={project.project_id} reload={reload} setReload={setReload}/>
                     </li>
                   </div>
                 </>

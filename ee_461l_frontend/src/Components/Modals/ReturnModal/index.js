@@ -68,8 +68,6 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reloa
         console.log(error);
       });
     }
-
-    console.log(checkout.current);
   };
   return (
     <div>

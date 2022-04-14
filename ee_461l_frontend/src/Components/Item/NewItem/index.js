@@ -16,10 +16,11 @@ const itemsNotInProject = [
 
 const axios = require("axios").default;
 
-function NewItem({ project_id }) {
+function NewItem({ proj_id, reload, setReload }) {
   const regexNumber = /^[0-9\b]+$/;
   const checkoutNum = useRef(0);
   const [itemsNotInProject, setItemsNotInProject] = useState([]);
+  const [success, setSuccess] = useState(0);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [item, setItem] = useState("");
@@ -31,34 +32,55 @@ function NewItem({ project_id }) {
     axios
       .post("http://localhost:5000/user/not_checked_out_hw/", {
         data: {
-          project_id: project_id,
+          project_id: proj_id,
         },
       })
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         setItemsNotInProject(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [reload]);
 
   const handleCheckOut = () => {
     setError(false);
-    if(item === ""){
+    if (item === "") {
       setError(true);
       return setErrorMessage("An item must be selected");
-    }
-    else if (!regexNumber.test(checkoutNum.current)) {
+    } else if (!regexNumber.test(checkoutNum.current)) {
       setError(true);
       return setErrorMessage("Checkout must be a valid number");
+    } else if (parseInt(checkoutNum.current) === 0) {
+      setError(true);
+      return setErrorMessage(`You cannot checkout 0 items`);
     } else if (parseInt(checkoutNum.current) > item.availability) {
       setError(true);
       return setErrorMessage(
         `You cannot checkout more than ${item.availability} items`
       );
     } else {
-
+      console.log(proj_id)
+      axios
+        .post("http://localhost:5000/projects/checkout/", {
+          data: {
+            project_id: proj_id,
+            HWSet_id: item._id.$oid,
+            checkout_qty: Number.parseInt(checkoutNum.current),
+          },
+        })
+        .then(function (response) {
+          // console.log(response);
+          setSuccess(success + 1);
+          setItem("");
+          checkoutNum.current = 0;
+          // reset api
+          setReload(reload + 1);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
   return (
