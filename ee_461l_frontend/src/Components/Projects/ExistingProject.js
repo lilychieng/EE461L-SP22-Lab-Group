@@ -70,7 +70,7 @@ function ExistingProject() {
         } else if (response.data === "Sucessfully joined the group"){
           setSuccess(true);
         }
-        console.log(response);
+        //(response);
       })
       .catch(function (error) {
         console.log(error);

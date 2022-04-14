@@ -43,7 +43,7 @@ function UserManagement({setAuthenticated}) {
         },
       })
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         let responseMessage = response.data;
         if (responseMessage === "user not found") {
           setError(true);

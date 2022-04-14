@@ -48,10 +48,6 @@ function ItemCard({ item, proj_id, reload, setReload }) {
             {item.availability} / {item.capacity} Available
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {console.log(
-              item.projects.find((project) => project.project_id === proj_id)
-                .checked_out
-            )}
             {
               item.projects.find((project) => project.project_id === proj_id)
                 .checked_out

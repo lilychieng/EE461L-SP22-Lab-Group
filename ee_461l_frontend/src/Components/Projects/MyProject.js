@@ -32,7 +32,7 @@ function MyProject({ setContent }) {
     axios
       .get("http://localhost:5000/projects/user/?user_id=" + user)
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         const projects = [];
         response.data.forEach(e => {
           if(e.Contributors.includes(user)){

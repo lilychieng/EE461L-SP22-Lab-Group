@@ -58,7 +58,7 @@ function UserSignUp() {
           },
         })
         .then(function (response) {
-          console.log(response);
+          // console.log(response);
           setSuccess(true);
         })
         .catch(function (error) {
