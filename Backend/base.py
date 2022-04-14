@@ -88,40 +88,59 @@ def checked_out_hw():
    else:
       return jsonify(response)
 
-#TODO: Rewrite for DB updates
+'''
+Parameters:
+`project_id`: ID of project to return the hardware under
+`HWSet_id`: ObjectId of hardware set to check in items for
+`checkout_qty`: Number of items to check in from hardware set associated with `HWSet_id`
+
+Returns:
+On success, updated hardware set data to display updated checkin data to the user
+'''
 @app.route('/projects/checkin/', methods=["POST"])
-def checkin():  
+def checkin():
    req = json.loads(request.data)
    payload = req['data']
-
    project_id = payload['project_id']
    HWSet_id = payload['HWSet_id']
-   user = payload['user']
    checkin_qty = payload['checkin_qty']
 
-   collection = c.Checkout.HWSets
-   matched = collection.find_one({'_id': ObjectId(HWSet_id)})
+   hwset_collection = c.Checkout.Hardware
+   matched = hwset_collection.find_one({'_id': ObjectId(HWSet_id)})
 
-   # Check if checkin_qty exceeds the amount checked out
-   if (matched.getCheckedoutQty() < checkin_qty):
-      return "checkin_qty is larger than the amount checked out"
+   totalChecked = matched['capacity'] - matched['availability']
 
-   matched.check_in(checkin_qty)
-   collection.update_one({'_id': ObjectId(HWSet_id)}, matched)
+   #Keep copy to edit
+   projects = matched['projects']
+   for project in matched['projects']:
+      # Found specified `project_id`
+      if project['project_id'] == project_id:
+         # Check if checkin_qty exceeds the total amount checked out
+         if (project['checked_out'] < checkin_qty) or (totalChecked < checkin_qty):
+            return "Invalid quantity specified: Check in quantity is larger than the total amount checked out"
 
-   # Check if all hardwareSets have been returned, and if so, then remove the id from project
-   if (matched.getCheckedoutQty() == 0):
+         #Adjust amount
+         matched['availability'] += checkin_qty
+         project['checked_out'] -= checkin_qty
 
-      collection = c.Checkout.Projects
-      project = collection.find_one({'project_id': project_id})
-      project.removeHWSet(HWSet_id)
-      collection.update_one({'project_id': project_id}, project)
+         #Remove if fully checked in 
+         if project['checked_out'] == 0:
+            projects.remove(project)
 
-   return "Successful checkin"
+         try:
+            # Update relevant attributes of object
+            hwset_collection.update_one({'_id': ObjectId(HWSet_id)}, {"$set": {'projects': matched['projects'], 'availability': matched['availability']}})
+         except Exception as e:
+            return "Check in failed"
+         else:
+            # Return updated so front-end can be updated immediately upon completion
+            updated_hw_set = hwset_collection.find_one({'_id': ObjectId(HWSet_id)})
+            return jsonify(updated_hw_set)
+
+   return "Invalid project ID"
 
 '''
 Parameters:
-`user`: ObjectID of user checkout action. Should be a member of project with ID `project_id` that hardware is being checked out under
 `project_id`: ID of project with which to register the hardware
 `HWSet_id`: ObjectId of hardware set to check out items from
 `checkout_qty`: Number of items to check out from hardware set associated with `HWSet_id`
@@ -137,26 +156,18 @@ def checkout():
 
    project_id = payload['project_id']
    HWSet_id = payload['HWSet_id']
-   user_id = payload['user']
    checkout_qty = payload['checkout_qty']
 
-   #
    hwset_collection = c.Checkout.Hardware
-   user_collection = c.Checkout.Users
-
-   matched = user_collection.find_one({'_id': ObjectId(user_id)}) # getting a user given user_id
-   if matched == None:
-      return 'Unsuccessful Checkout - user does not exist'
-
    hwset = hwset_collection.find_one({'_id': ObjectId(HWSet_id)})
 
    if checkout_qty > hwset['availability']:
       return 'Unsuccessful Checkout - checkout quantity exceeds HW set availability'
    
-   # Modify hwset's availability   
+   # Modify hardware set's availability   
    new_avail = hwset['availability'] - checkout_qty
 
-   # Increment number used in hwset's project arr's proj_id
+   # Increment number used in hwset's project arr's project_id
    proj_dict = hwset['projects']
    incremented = False
    for proj in proj_dict:
@@ -169,6 +180,7 @@ def checkout():
       proj_dict.append({"project_id" : project_id, "checked_out" : checkout_qty})
 
    try:
+      # Update relevant attributes of object
       hwset_collection.update_one({'_id': ObjectId(HWSet_id)}, {"$set" : {"projects" : proj_dict, "availability" : new_avail}})
    except Exception as e:
       return "Check out failed"
@@ -367,6 +379,7 @@ if __name__ == '__main__':
 
    # Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
-   
+   print(checkout())
+
    # Establish Flask instance
-   app.run(debug=True)
+   #app.run(debug=True)
