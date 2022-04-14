@@ -88,30 +88,6 @@ def checked_out_hw():
    else:
       return jsonify(response)
 
-#TODO: Legacy version of route `checked_out_hw()`, mark for deletion
-@app.route('/user/project/all_hw/', methods=["POST"])
-def get_all_hw():
-   req = json.loads(request.data)
-   payload = req['data']
-   user_id = payload['user']
-
-   HWSets_collection = c.Checkout.HWSets
-   user_collection = c.Checkout.Users
-
-   matched = user_collection.find_one({'_id': ObjectId(user_id)})
-   page_sanitized = json.loads(json_util.dumps(matched))
-   projects = page_sanitized['projects']
-
-   response = []
-
-   for p in projects:
-      HWSets = HWSets_collection.find({'projects': p })
-
-      proj_hw = {'project_id': p, 'HWSets': json.loads(json_util.dumps(HWSets))}
-      response.append(proj_hw)
-
-   return jsonify(response)
-
 #TODO: Rewrite for DB updates
 @app.route('/projects/checkin/', methods=["POST"])
 def checkin():  
@@ -208,7 +184,7 @@ def join_users_projects():
 def get_users_projects():
    user_id = request.args.get('user_id')
    collection = c.Checkout.Users
-   matched = collection.find_one({'_id': ObjectId('625068ca4453786c33e5ec70')})
+   matched = collection.find_one({'_id': ObjectId('user_id')})
 
    if(matched is None):
       return "User not found"
@@ -218,7 +194,6 @@ def get_users_projects():
    projects = [json.loads(json_util.dumps(c.Checkout.Projects.find_one({"ID": project_id}))) 
                for project_id in page_sanitized['projects']]
    
-   print(projects, flush=True)
    return jsonify(projects)
 
 # Get all projects on the database
@@ -327,10 +302,6 @@ if __name__ == '__main__':
 
    #Establish connection to cloud DB
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
-<<<<<<< HEAD
-=======
-   #checked_out_hwSets()
->>>>>>> a873c2e78b1d9a5f667be889b2e24ac90b56e6d6
    
    #Establish Flask instance
    app.run(debug=True)
