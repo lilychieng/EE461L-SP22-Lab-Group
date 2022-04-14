@@ -37,8 +37,8 @@ function ItemCard({ item, proj_id, reload, setReload }) {
         <CardMedia
           component="img"
           height="140"
-          image="https://i.imgur.com/cn2Vlek.jpeg" //TODO: get this from backend later
-          alt="green iguana"
+          image= {"../../../../public/images/" + item} //TODO: get this from backend later
+          alt={"" + item}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
