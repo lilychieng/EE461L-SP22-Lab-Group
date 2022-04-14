@@ -13,11 +13,22 @@ from projects import Project
 from CheckoutReceipt import CheckoutReceipt
 from hardwareSet import HardwareSet
 
+def connect_db():
+   # Parse config file and decrypt password using stored key
+   config.read("db_config.ini")
+   key = Fernet(config.get("Credentials", "Key").encode('UTF-8'))
+   password = key.decrypt(config.get("Credentials", "Password").encode('UTF-8')).decode('UTF-8')
+   ca = certifi.where()
+
+   # Establish connection to cloud DB
+   c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
+   return c
+   
 app = Flask(__name__)
 CORS(app, supports_credegntials=True)
 config = ConfigParser()
 # Reference to MongoClient
-c = ""
+c = connect_db()
 # Available HWSets users can check out from
 hardware_sets = []
 
@@ -372,15 +383,6 @@ def login():
       return 'user credentials do not match'
 
 if __name__ == '__main__':
-   # Parse config file and decrypt password using stored key
-   config.read("db_config.ini")
-   key = Fernet(config.get("Credentials", "Key").encode('UTF-8'))
-   password = key.decrypt(config.get("Credentials", "Password").encode('UTF-8')).decode('UTF-8')
-   ca = certifi.where()
-
-   # Establish connection to cloud DB
-   c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
-   # print(checkout())
 
    # Establish Flask instance
    app.run(debug=True)
