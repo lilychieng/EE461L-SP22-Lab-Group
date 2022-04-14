@@ -52,11 +52,13 @@ function NewItem({ project_id }) {
     else if (!regexNumber.test(checkoutNum.current)) {
       setError(true);
       return setErrorMessage("Checkout must be a valid number");
-    } else if (parseInt(checkoutNum.current) > item.avail) {
+    } else if (parseInt(checkoutNum.current) > item.availability) {
       setError(true);
       return setErrorMessage(
-        `You cannot checkout more than ${item.avail} items`
+        `You cannot checkout more than ${item.availability} items`
       );
+    } else {
+
     }
   };
   return (
@@ -82,7 +84,7 @@ function NewItem({ project_id }) {
         </TextField>
         {item !== "" && (
           <>
-            <Typography>There are {item.avail} available</Typography>
+            <Typography>There are {item.availability} available</Typography>
             <TextField
               label="# to Checkout"
               fullWidth

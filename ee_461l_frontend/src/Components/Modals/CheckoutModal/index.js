@@ -6,7 +6,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 
-function CheckoutModal({ item, setOpen, open }) {
+const axios = require("axios").default;
+
+function CheckoutModal({ item, setOpen, open, proj_id, reload, setReload }) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -25,6 +27,7 @@ function CheckoutModal({ item, setOpen, open }) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const handleClose = () => {
+    checkout.current = 0;
     setError(false);
     setSuccess(false)
     setOpen(false);
@@ -47,10 +50,22 @@ function CheckoutModal({ item, setOpen, open }) {
     }
     // axios api request
     else {
-      setSuccess(true);
+      axios
+      .post("http://localhost:5000/projects/checkout/", {
+        data: {
+          project_id : proj_id,
+          HWSet_id: item._id.$oid,
+          checkout_qty: Number.parseInt(checkout.current),
+        },
+      })
+      .then(function (response) {
+        setSuccess(true);
+        setReload(reload + 1);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
-
-    console.log(checkout.current);
   };
   return (
     <div>

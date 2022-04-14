@@ -29,13 +29,13 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reloa
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const handleClose = () => {
+    checkout.current = 0;
     setError(false);
     setSuccess(false);
     setReturnModalOpen(false);
   };
 
   const handleReturn = (e) => {
-    console.log(item._id.$oid);
     setError(false);
     setSuccess(false);
     if (!regexNumber.test(checkout.current)) {
@@ -61,7 +61,6 @@ function ReturnModal({ item, setReturnModalOpen, returnModalOpen, proj_id, reloa
         },
       })
       .then(function (response) {
-        console.log(response);
         setSuccess(true);
         setReload(reload + 1);
       })

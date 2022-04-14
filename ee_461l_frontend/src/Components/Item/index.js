@@ -17,7 +17,14 @@ function ItemCard({ item, proj_id, reload, setReload }) {
 
   return (
     <>
-      <CheckoutModal item={item} setOpen={setOpen} open={open} />
+      <CheckoutModal
+        item={item}
+        setOpen={setOpen}
+        open={open}
+        reload={reload}
+        setReload={setReload}
+        proj_id={proj_id}
+      />
       <ReturnModal
         item={item}
         proj_id={proj_id}
@@ -41,8 +48,15 @@ function ItemCard({ item, proj_id, reload, setReload }) {
             {item.availability} / {item.capacity} Available
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {console.log(item.projects.find(project => project.project_id === proj_id ).checked_out)}
-            {item.projects.find(project => project.project_id === proj_id ).checked_out} Checked Out
+            {console.log(
+              item.projects.find((project) => project.project_id === proj_id)
+                .checked_out
+            )}
+            {
+              item.projects.find((project) => project.project_id === proj_id)
+                .checked_out
+            }{" "}
+            Checked Out
           </Typography>
         </CardContent>
         <Button size="small" onClick={handleOpen}>
