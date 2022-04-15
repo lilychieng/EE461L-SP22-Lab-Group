@@ -53,7 +53,6 @@ export default function Inventory() {
   useEffect(() => {
     axios
       .post("/user/checked_out_hw/", {
-      // .post("http://localhost:5000/user/checked_out_hw/", {
         data: {
           user: user,
         },

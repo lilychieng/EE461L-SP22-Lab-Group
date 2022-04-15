@@ -31,7 +31,6 @@ function NewItem({ proj_id, reload, setReload }) {
   useEffect(() => {
     axios
       .post("/user/not_checked_out_hw/", {
-      // .post("http://localhost:5000/user/not_checked_out_hw/", {
         data: {
           project_id: proj_id,
         },
@@ -65,7 +64,6 @@ function NewItem({ proj_id, reload, setReload }) {
       console.log(proj_id)
       axios
         .post("/projects/checkout/", {
-        // .post("http://localhost:5000/projects/checkout/", {
           data: {
             project_id: proj_id,
             HWSet_id: item._id.$oid,
