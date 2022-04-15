@@ -37,8 +37,9 @@ function ItemCard({ item, proj_id, reload, setReload }) {
         <CardMedia
           component="img"
           height="140"
-          image={"../../../../public/images/" + item + ".jpg"} //TODO: get this from backend later
-          alt={"" + item}
+          image= "/images/TM4C.jpg"
+          // image={"/images/"+item.name+".jpg"} //TODO: get this from backend later
+          alt={item.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
