@@ -1,9 +1,10 @@
-import React from "react";
+import { useEffect } from "react";
 import Nav from "../Components/Nav";
 import { useUser } from "../hooks/UserContext";
 
 const Account = ({ title }) => {
   const user = useUser()
+
   return (
     <>
     <Nav/>
