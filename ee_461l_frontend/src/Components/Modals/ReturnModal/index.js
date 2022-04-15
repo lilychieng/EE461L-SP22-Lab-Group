@@ -32,6 +32,7 @@ function ReturnModal({
 
   const regexNumber = /^[0-9\b]+$/;
   const checkout = useRef(0);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -73,10 +74,12 @@ function ReturnModal({
           },
         })
         .then(function (response) {
+          setSubmitDisabled(true);
           setSuccess(true);
           setReload(reload + 1);
           setTimeout(function () {
             handleClose();
+            setSubmitDisabled(false);
           }, 750);
         })
         .catch(function (error) {
@@ -135,7 +138,7 @@ function ReturnModal({
             }}
             style={{ marginBottom: "20px" }}
           />
-          <Button fullWidth onClick={handleReturn}>
+          <Button fullWidth onClick={handleReturn} disabled={submitDisabled}>
             Return
           </Button>
         </Box>
