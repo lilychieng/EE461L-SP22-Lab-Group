@@ -410,6 +410,5 @@ def login():
       return 'user credentials do not match'
 
 if __name__ == '__main__':
-   get_weather()
    # Establish Flask instance
-   #app.run(debug=True)
+   app.run(debug=True)
