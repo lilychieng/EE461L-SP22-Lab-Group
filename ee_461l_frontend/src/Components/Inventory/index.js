@@ -7,6 +7,7 @@ import NewItem from "../Item/NewItem";
 import { CircularProgress } from "@mui/material";
 import { useUser } from "../../hooks/UserContext";
 import { CSVLink, CSVDownload } from "react-csv";
+import "../../css/styling.css";
 
 /*
  * data is a temp variable to mock the HWSets recieved from the Backend
@@ -71,7 +72,11 @@ export default function Inventory() {
     <>
       <h2>My Dashboard</h2>
       <div>
-        <CSVLink data={data}>Download Metadata</CSVLink>
+        <Button variant="outlined">
+          <CSVLink id="remove-underline" data={data}>
+            Download Metadata
+          </CSVLink>
+        </Button>
       </div>
       {!isLoading ? (
         <>
