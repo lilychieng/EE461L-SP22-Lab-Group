@@ -30,7 +30,8 @@ function NewItem({ proj_id, reload, setReload }) {
 
   useEffect(() => {
     axios
-      .post("http://localhost:5000/user/not_checked_out_hw/", {
+      .post("/user/not_checked_out_hw/", {
+      // .post("http://localhost:5000/user/not_checked_out_hw/", {
         data: {
           project_id: proj_id,
         },

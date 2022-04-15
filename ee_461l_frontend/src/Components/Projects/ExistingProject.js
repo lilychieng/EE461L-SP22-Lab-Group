@@ -37,7 +37,6 @@ function ExistingProject() {
   useEffect(() => {
     axios
       .get("/projects/all/")
-      // .get("http://localhost:5000/projects/all/")
       .then(function (response) {
         let data = [];
         response.data.forEach((e) => {
@@ -60,7 +59,6 @@ function ExistingProject() {
   const handleSubmit = () => {
     axios
       .post("/projects/join/?user_id=" + user, {
-      // .post("http://localhost:5000/projects/join/?user_id=" + user, {
         data: {
           projectID: projects,
         },

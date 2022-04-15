@@ -37,7 +37,6 @@ function UserManagement({setAuthenticated}) {
     }
     axios
       .post("/user/login/", {
-      // .post("http://localhost:5000/user/login/", {
         data: {
           username: username,
           password: password,

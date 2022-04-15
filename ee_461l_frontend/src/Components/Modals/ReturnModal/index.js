@@ -66,7 +66,6 @@ function ReturnModal({
     else {
       axios
         .post("/projects/checkin/", {
-        // .post("http://localhost:5000/projects/checkin/", {
           data: {
             project_id: proj_id,
             HWSet_id: item._id.$oid,

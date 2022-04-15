@@ -31,7 +31,6 @@ function MyProject({ setContent }) {
   useEffect(() => {
     axios
       .get("/projects/user/?user_id=" + user)
-      // .get("http://localhost:5000/projects/user/?user_id=" + user)
       .then(function (response) {
         // console.log(response);
         const projects = [];
