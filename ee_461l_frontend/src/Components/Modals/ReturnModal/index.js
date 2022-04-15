@@ -65,7 +65,8 @@ function ReturnModal({
     // axios api request
     else {
       axios
-        .post("http://localhost:5000/projects/checkin/", {
+        .post("/projects/checkin/", {
+        // .post("http://localhost:5000/projects/checkin/", {
           data: {
             project_id: proj_id,
             HWSet_id: item._id.$oid,

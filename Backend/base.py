@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from cryptography.fernet import Fernet
 from configparser import ConfigParser
 from hashlib import sha256
-from flask_cors import CORS, cross_origin
+# from flask_cors import CORS, cross_origin
 import certifi
 import requests
 
@@ -25,8 +25,8 @@ def connect_db():
    c = MongoClient(f"mongodb+srv://dbuser:{password}@backend.yqoos.mongodb.net/Checkout?retryWrites=true&w=majority", tlsCAFile=ca)
    return c
    
-app = Flask(__name__)
-CORS(app, supports_credegntials=True)
+app = Flask(__name__, static_folder="../ee_461l_frontend/build", static_url_path="") 
+# CORS(app, supports_credegntials=True)
 config = ConfigParser()
 # Reference to MongoClient
 c = connect_db()

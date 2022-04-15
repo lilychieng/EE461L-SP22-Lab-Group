@@ -51,7 +51,8 @@ function UserSignUp() {
     }
     if (validatePassword()) {
       axios
-        .post("http://localhost:5000/user/signup/", {
+        .post("/user/signup/", {
+        // .post("http://localhost:5000/user/signup/", {
           data: {
             username: username,
             password: password,

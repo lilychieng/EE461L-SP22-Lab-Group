@@ -63,7 +63,8 @@ function NewItem({ proj_id, reload, setReload }) {
     } else {
       console.log(proj_id)
       axios
-        .post("http://localhost:5000/projects/checkout/", {
+        .post("/projects/checkout/", {
+        // .post("http://localhost:5000/projects/checkout/", {
           data: {
             project_id: proj_id,
             HWSet_id: item._id.$oid,

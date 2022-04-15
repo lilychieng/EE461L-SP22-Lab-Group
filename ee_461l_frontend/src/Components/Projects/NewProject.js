@@ -43,7 +43,8 @@ function NewProject() {
     }
     setIsLoading(true);
     axios
-      .post("http://localhost:5000/projects/create/", {
+      .post("/projects/create/", {
+      // .post("http://localhost:5000/projects/create/", {
         data: {
           name: projectName.current,
           projectID: parseInt(projectID.current),
