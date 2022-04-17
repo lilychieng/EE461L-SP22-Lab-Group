@@ -59,6 +59,13 @@ function UserSignUp() {
         })
         .then(function (response) {
           // console.log(response);
+          if(response.data === 'user already exists'){
+            setError(true);
+            return setErrorMessage('User already exists')
+          } else if (response.data === 'failed to register user'){
+            setError(true);
+            return setErrorMessage('Failed to Register. Please try again!')
+          }
           setSuccess(true);
         })
         .catch(function (error) {
