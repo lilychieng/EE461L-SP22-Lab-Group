@@ -37,7 +37,7 @@ function ItemCard({ item, proj_id, reload, setReload }) {
         <CardMedia
           component="img"
           height="140"
-          image={"public/images/"+item.name+".jpg"} //TODO: get this from backend later
+          image={item.name+".jpg"} //TODO: get this from backend later
           // frontend/src/Components/Item
           alt={item.name}
         />
