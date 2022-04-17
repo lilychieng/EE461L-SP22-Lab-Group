@@ -50,6 +50,15 @@ const Nav = () => {
           </Button>
         </li>
         <li>
+          <Button
+            onClick={() =>
+              currRoute?.pathname !== "/weather" && nav("/weather")
+            }
+          >
+            Weather
+          </Button>
+        </li>
+        <li>
           <Button onClick={() => nav("/login") && setUser(null)}>Logout</Button>
         </li>
       </ul>

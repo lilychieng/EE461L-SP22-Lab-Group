@@ -12,15 +12,15 @@ import "../../css/styling.css";
 /*
  * data is a temp variable to mock the HWSets recieved from the Backend
  */
-const data = [
-  { name: "TM4C", capacity: 200, avail: 120, class: "EE 319K", img: "" },
-  { name: "Basys", capacity: 250, avail: 100, class: "EE 316", img: "" },
-  { name: "Breadboard", capacity: 500, avail: 321, class: "EE 319K", img: "" },
-  { name: "Wires", capacity: 1200, avail: 1103, class: "EE 316", img: "" },
-  { name: "Capacitors", capacity: 200, avail: 143, class: "EE 319K", img: "" },
-  { name: "Arduino Uno", capacity: 429, avail: 123, class: "EE 316", img: "" },
-  { name: "Raspberry Pi", capacity: 842, avail: 624, class: "EE 316", img: "" },
-];
+// const data = [
+//   { name: "TM4C", capacity: 200, avail: 120, class: "EE 319K", img: "" },
+//   { name: "Basys", capacity: 250, avail: 100, class: "EE 316", img: "" },
+//   { name: "Breadboard", capacity: 500, avail: 321, class: "EE 319K", img: "" },
+//   { name: "Wires", capacity: 1200, avail: 1103, class: "EE 316", img: "" },
+//   { name: "Capacitors", capacity: 200, avail: 143, class: "EE 319K", img: "" },
+//   { name: "Arduino Uno", capacity: 429, avail: 123, class: "EE 316", img: "" },
+//   { name: "Raspberry Pi", capacity: 842, avail: 624, class: "EE 316", img: "" },
+// ];
 
 const axios = require("axios").default;
 
@@ -33,20 +33,20 @@ export default function Inventory() {
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
   const [items, setItems] = useState([]);
 
-  const handleSearch = (e) => {
-    let keyword = e.target.value;
-    let tmp = data.filter(function (item) {
-      return (
-        item.name.toLowerCase().includes(keyword.toLowerCase()) ||
-        item.class.toLowerCase().includes(keyword.toLowerCase())
-      );
-    });
-    setItemsToDisplay(tmp);
-  };
+  // const handleSearch = (e) => {
+  //   let keyword = e.target.value;
+  //   let tmp = data.filter(function (item) {
+  //     return (
+  //       item.name.toLowerCase().includes(keyword.toLowerCase()) ||
+  //       item.class.toLowerCase().includes(keyword.toLowerCase())
+  //     );
+  //   });
+  //   setItemsToDisplay(tmp);
+  // };
 
   useEffect(() => {
-    setItems(data);
-    setItemsToDisplay(data);
+    // setItems(data);
+    // setItemsToDisplay(data);
     setReload(reload + 1);
   }, []);
 
@@ -71,13 +71,13 @@ export default function Inventory() {
   return (
     <>
       <h2>My Dashboard</h2>
-      <div>
+      {/* <div>
         <Button variant="outlined">
           <CSVLink id="remove-underline" data={data}>
             Download Metadata
           </CSVLink>
         </Button>
-      </div>
+      </div> */}
       {!isLoading ? (
         <>
           {projects.length > 0 ? (

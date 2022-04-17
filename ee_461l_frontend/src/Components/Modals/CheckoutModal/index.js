@@ -24,6 +24,7 @@ function CheckoutModal({ item, setOpen, open, proj_id, reload, setReload }) {
   const regexNumber = /^[0-9\b]+$/;
   const checkout = useRef(0);
   const [success, setSuccess] = useState(false);
+  const [submitButton, setSubmitButton] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const handleClose = () => {
@@ -59,9 +60,11 @@ function CheckoutModal({ item, setOpen, open, proj_id, reload, setReload }) {
           },
         })
         .then(function (response) {
+          setSubmitButton(true);
           setSuccess(true);
           setReload(reload + 1);
           setTimeout(function () {
+            setSubmitButton(false);
             handleClose();
           }, 750);
         })
@@ -124,7 +127,7 @@ function CheckoutModal({ item, setOpen, open, proj_id, reload, setReload }) {
             }}
             style={{ marginBottom: "20px" }}
           />
-          <Button fullWidth onClick={handleAvail}>
+          <Button fullWidth onClick={handleAvail} disabled={submitButton}>
             Checkout
           </Button>
         </Box>

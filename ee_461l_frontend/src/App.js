@@ -13,6 +13,7 @@ import SupportTicket from "./Components/SupportTicket";
 import UserLogin from "./Components/UserManagement/UserLogin";
 import RequireAuthentication from "./RequireAuthentication";
 import { UserProvider } from "./hooks/UserContext";
+import Weather from "./pages/Weather";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -54,6 +55,14 @@ function App() {
           element={
             <RequireAuthentication isAuthenticated={isAuthenticated}>
               <Project />
+            </RequireAuthentication>
+          }
+        />
+        <Route
+          path="/weather"
+          element={
+            <RequireAuthentication isAuthenticated={isAuthenticated}>
+              <Weather />
             </RequireAuthentication>
           }
         />

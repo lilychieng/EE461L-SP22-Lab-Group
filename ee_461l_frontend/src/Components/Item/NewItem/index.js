@@ -61,7 +61,7 @@ function NewItem({ proj_id, reload, setReload }) {
         `You cannot checkout more than ${item.availability} items`
       );
     } else {
-      console.log(proj_id)
+      console.log(proj_id);
       axios
         .post("/projects/checkout/", {
           data: {
@@ -85,41 +85,45 @@ function NewItem({ proj_id, reload, setReload }) {
   };
   return (
     <Card>
-      <Typography gutterBottom variant="h5" component="div">
-        Add New Item
-      </Typography>
-      {error && <Alert severity="error">{errorMessage}</Alert>}
-      <CardContent>
-        <TextField
-          id="outlined-select-group"
-          select
-          label="New Item"
-          value={item}
-          onChange={handleItemChange}
-          helperText="Select a new Item to add to the Project"
-        >
-          {itemsNotInProject.map((option, i) => (
-            <MenuItem key={i} value={option}>
-              {option.name}
-            </MenuItem>
-          ))}
-        </TextField>
-        {item !== "" && (
-          <>
-            <Typography>There are {item.availability} available</Typography>
+      {itemsNotInProject.length !== 0 && (
+        <>
+          <Typography gutterBottom variant="h5" component="div">
+            Add New Item
+          </Typography>
+          {error && <Alert severity="error">{errorMessage}</Alert>}
+          <CardContent>
             <TextField
-              label="# to Checkout"
-              fullWidth
-              onChange={(e) => (checkoutNum.current = e.target.value)}
-            />
-            <CardActions>
-              <Button size="small" onClick={handleCheckOut}>
-                Check Out
-              </Button>
-            </CardActions>
-          </>
-        )}
-      </CardContent>
+              id="outlined-select-group"
+              select
+              label="New Item"
+              value={item}
+              onChange={handleItemChange}
+              helperText="Select a new Item to add to the Project"
+            >
+              {itemsNotInProject.map((option, i) => (
+                <MenuItem key={i} value={option}>
+                  {option.name}
+                </MenuItem>
+              ))}
+            </TextField>
+            {item !== "" && (
+              <>
+                <Typography>There are {item.availability} available</Typography>
+                <TextField
+                  label="# to Checkout"
+                  fullWidth
+                  onChange={(e) => (checkoutNum.current = e.target.value)}
+                />
+                <CardActions>
+                  <Button size="small" onClick={handleCheckOut}>
+                    Check Out
+                  </Button>
+                </CardActions>
+              </>
+            )}
+          </CardContent>
+        </>
+      )}
     </Card>
   );
 }

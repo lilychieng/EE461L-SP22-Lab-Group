@@ -367,7 +367,7 @@ def signup():
    matched = collection.find_one({'user': username})
    print(user.toDatabase(), flush=True)
    if matched != None:
-      return 'user already exists', 400
+      return 'user already exists'
 
    #TODO: 300 code for existing user, do user validation later
    
@@ -375,9 +375,9 @@ def signup():
       t_id = c.Checkout.Users.insert_one(user.toDatabase()).inserted_id
    except Exception as e:
       print(e, flush=True)
-      return "failed to register user", 500
+      return "failed to register user"
    else:
-      return "successfully registered", 200
+      return "successfully registered"
 
 '''
 Route: login
