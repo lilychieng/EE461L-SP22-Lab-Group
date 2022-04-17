@@ -26,7 +26,7 @@ function Weather() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/datasets/weather/")
+      .get("/datasets/weather/")
       .then(function (response) {
         convertToFahrenheit(response.data.weather.main.temp);
         setData(response.data.forecast.list);
