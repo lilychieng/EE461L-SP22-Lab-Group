@@ -28,7 +28,6 @@ function Weather() {
     axios
       .get("http://localhost:5000/datasets/weather/")
       .then(function (response) {
-        console.log(response);
         convertToFahrenheit(response.data.weather.main.temp);
         setData(response.data.forecast.list);
         setData(formatDataToDownload(response.data.forecast.list));
