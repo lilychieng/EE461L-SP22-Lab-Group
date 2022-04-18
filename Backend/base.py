@@ -411,4 +411,4 @@ def login():
 
 if __name__ == '__main__':
    # Establish Flask instance
-   app.run(debug=True)
+   app.run()
