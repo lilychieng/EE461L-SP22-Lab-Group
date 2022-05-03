@@ -20,6 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const axios = require("axios").default;
 
+/* React hooks for loading existing projects. */
 function ExistingProject() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -34,6 +35,7 @@ function ExistingProject() {
     setProjects(e.target.value);
   };
 
+  /* React hook called when the component is mounted. It's used to fetch existing project data from the backend. */
   useEffect(() => {
     axios
       .get("http://localhost:5000/projects/all/")
@@ -56,6 +58,9 @@ function ExistingProject() {
       });
   }, []);
 
+  /**
+   * Allows user to join project
+   */
   const handleSubmit = () => {
     axios
       .post("http://localhost:5000/projects/join/?user_id=" + user, {
@@ -64,10 +69,10 @@ function ExistingProject() {
         },
       })
       .then(function (response) {
-        if(response.data === "Already a member"){
+        if (response.data === "Already a member") {
           setError(true);
           setErrorMessage("Already apart of Project " + projects);
-        } else if (response.data === "Sucessfully joined the group"){
+        } else if (response.data === "Sucessfully joined the group") {
           setSuccess(true);
         }
         //(response);
@@ -84,9 +89,7 @@ function ExistingProject() {
         <h3>Join Existing Project</h3>
       </Item>
       {error && <Alert severity="error">{errorMessage}</Alert>}
-      {success && (
-        <Alert>Project {projects} sucessfully joined!</Alert>
-      )}
+      {success && <Alert>Project {projects} sucessfully joined!</Alert>}
       <Item>
         {!isLoading ? (
           <TextField

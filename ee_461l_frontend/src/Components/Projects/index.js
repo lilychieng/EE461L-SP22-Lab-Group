@@ -17,6 +17,8 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
+/* A ternary operators to allow us to navigate between My Projects, Join Existing Project, and Create New Project. */
+
 function Projects() {
   const [content, setContent] = useState("my");
   const handleChange = (e) => {
@@ -41,7 +43,7 @@ function Projects() {
         <ToggleButton value="existing">Existing Project</ToggleButton>
       </ToggleButtonGroup>
 
-      {content === "my" && <MyProject setContent={setContent}/>}
+      {content === "my" && <MyProject setContent={setContent} />}
       {content === "new" && <NewProject />}
       {content === "existing" && <ExistingProject />}
     </div>

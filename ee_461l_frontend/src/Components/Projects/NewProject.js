@@ -18,6 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
+/* React hooks for creating new projects. */
 function NewProject() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -28,6 +29,7 @@ function NewProject() {
   const description = useRef("");
   const demo = useRef("");
 
+  /* React hook called when the component is mounted. It's used to create project data and send to the backend. */
   const handleSubmit = () => {
     setError(false);
     if (!projectName.current || !projectID.current || !description.current) {
@@ -56,10 +58,10 @@ function NewProject() {
         if (response.data === "Project sucessfully added!") {
           setIsLoading(false);
           setSucess(true);
-        } else if (response.data === "Project ID is taken"){
+        } else if (response.data === "Project ID is taken") {
           setIsLoading(false);
           setError(true);
-          setErrorMessage('Project ID is taken');
+          setErrorMessage("Project ID is taken");
         }
       })
       .catch(function (error) {

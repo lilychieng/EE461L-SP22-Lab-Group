@@ -19,6 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const axios = require("axios").default;
 
+/* React hooks for loading user projects. */
 function MyProject({ setContent }) {
   const [isLoading, setIsLoading] = useState(true);
   const user = useUser();
@@ -28,14 +29,15 @@ function MyProject({ setContent }) {
     setGroup(event.target.value);
   };
 
+  /* React hook called when the component is mounted. It's used to fetch user's existing project data from the backend. */
   useEffect(() => {
     axios
       .get("http://localhost:5000/projects/user/?user_id=" + user)
       .then(function (response) {
         // console.log(response);
         const projects = [];
-        response.data.forEach(e => {
-          if(e.Contributors.includes(user)){
+        response.data.forEach((e) => {
+          if (e.Contributors.includes(user)) {
             projects.push(e.ID);
           }
         });
